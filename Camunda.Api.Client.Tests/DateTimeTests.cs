@@ -18,7 +18,7 @@ namespace Camunda.Api.Client.Tests
         [InlineData("2010-05-01T01:01:01", "2010-05-01T01:01:01.000+0100")]
         public void GetDateTime(string testDateTimeString,string expectedDatetimeString)
         {
-           var actualIso8601DateString = DateTime.Parse(testDateTimeString).ToJavaISO8601();
+            string actualIso8601DateString = DateTime.Parse(testDateTimeString).ToJavaISO8601();
             Assert.Equal(expectedDatetimeString, actualIso8601DateString);
         }
     }

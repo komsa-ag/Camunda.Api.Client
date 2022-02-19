@@ -1,6 +1,6 @@
-﻿namespace Camunda.Api.Client.Group
-{
-    public class GroupInfo
+﻿namespace Camunda.Api.Client.Group;
+
+public class GroupInfo
 	{
 		/// <summary>
 		/// The id of the group
@@ -17,4 +17,3 @@
 
 		public override string ToString() => Id;
 	}
-}

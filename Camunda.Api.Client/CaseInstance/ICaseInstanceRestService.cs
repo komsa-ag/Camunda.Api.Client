@@ -7,48 +7,47 @@ using Refit;
 
 #endregion
 
-namespace Camunda.Api.Client.CaseInstance
+namespace Camunda.Api.Client.CaseInstance;
+
+internal interface ICaseInstanceRestService
 {
-    internal interface ICaseInstanceRestService
-    {
-        [Get("/case-instance/{id}/variables")]
-        Task<Dictionary<string, VariableValue>> GetVariables(string id, bool? deserializeValues);
+    [Get("/case-instance/{id}/variables")]
+    Task<Dictionary<string, VariableValue>> GetVariables(string id, bool? deserializeValues);
 
-        [Get("/case-instance/{id}/variables/{varName}")]
-        Task<VariableValue> GetVariableValue(string id, string varName, bool? deserializeValue);
+    [Get("/case-instance/{id}/variables/{varName}")]
+    Task<VariableValue> GetVariableValue(string id, string varName, bool? deserializeValue);
 
-        // TODO: check if HttpWebResponse is indeed the correct return type
-        [Get("/case-instance/{id}/variables/{varName}/data")]
-        Task<HttpResponseMessage> GetBinaryVariable(string id, string varName);
+    // TODO: check if HttpWebResponse is indeed the correct return type
+    [Get("/case-instance/{id}/variables/{varName}/data")]
+    Task<HttpResponseMessage> GetBinaryVariable(string id, string varName);
 
-        [Post("/case-instance/{id}/variables")]
-        Task ModifyVariables(string id, [Body] PatchVariables patch);
+    [Post("/case-instance/{id}/variables")]
+    Task ModifyVariables(string id, [Body] PatchVariables patch);
 
-        [Put("/case-instance/{id}/variables/{varName}")]
-        Task UpdateVariable(string id, string varName, [Body] VariableValue value);
+    [Put("/case-instance/{id}/variables/{varName}")]
+    Task UpdateVariable(string id, string varName, [Body] VariableValue value);
 
-        [Post("/case-instance/{id}/variables/{varName}/data")]
-        Task SetBinaryVariable(string id, string varName, BinaryDataContent data, ValueTypeContent valueType);
+    [Post("/case-instance/{id}/variables/{varName}/data")]
+    Task SetBinaryVariable(string id, string varName, BinaryDataContent data, ValueTypeContent valueType);
 
-        [Delete("/case-instance/{id}/variables/{varName}")]
-        Task DeleteVariable(string id, string varName);
+    [Delete("/case-instance/{id}/variables/{varName}")]
+    Task DeleteVariable(string id, string varName);
 
-        [Get("/case-instance/{id}")]
-        Task<CaseInstanceInfo> Get(string id);
+    [Get("/case-instance/{id}")]
+    Task<CaseInstanceInfo> Get(string id);
 
-        [Post("/case-instance")]
-        Task<List<CaseInstanceInfo>> GetList([Body] CaseInstanceQuery query, int? firstResult, int? maxResults);
+    [Post("/case-instance")]
+    Task<List<CaseInstanceInfo>> GetList([Body] CaseInstanceQuery query, int? firstResult, int? maxResults);
 
-        [Post("/case-instance/count")]
-        Task<CountResult> GetListCount([Body] CaseInstanceQuery query);
+    [Post("/case-instance/count")]
+    Task<CountResult> GetListCount([Body] CaseInstanceQuery query);
 
-        [Post("/case-instance/{id}/complete")]
-        Task Complete(string id, [Body] ChangeCaseInstanceState completeCaseInstance);
+    [Post("/case-instance/{id}/complete")]
+    Task Complete(string id, [Body] ChangeCaseInstanceState completeCaseInstance);
 
-        [Post("/case-instance/{id}/close")]
-        Task Close(string id, [Body] ChangeCaseInstanceState closeCaseInstance);
+    [Post("/case-instance/{id}/close")]
+    Task Close(string id, [Body] ChangeCaseInstanceState closeCaseInstance);
 
-        [Post("/case-instance/{id}/terminate")]
-        Task Terminate(string id, [Body] ChangeCaseInstanceState terminateCaseInstance);
-    }
+    [Post("/case-instance/{id}/terminate")]
+    Task Terminate(string id, [Body] ChangeCaseInstanceState terminateCaseInstance);
 }

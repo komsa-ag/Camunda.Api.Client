@@ -1,7 +1,6 @@
-﻿namespace Camunda.Api.Client
+﻿namespace Camunda.Api.Client;
+
+internal class UserInfo
 {
-    internal class UserInfo
-    {
-        public string UserId;
-    }
+    public string UserId;
 }

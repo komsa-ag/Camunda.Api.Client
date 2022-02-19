@@ -14,14 +14,14 @@ namespace Camunda.Api.Client.Tests
         [Fact]
         public async Task GetList()
         {
-            var mockHttp = new MockHttpMessageHandler();
+            MockHttpMessageHandler mockHttp = new MockHttpMessageHandler();
 
             mockHttp.Expect(HttpMethod.Post, "http://localhost:8080/engine-rest")
                 .Respond(HttpStatusCode.OK, "text/html", "OK");
 
 
-            var client = CamundaClient.Create("http://localhost:8080/engine-rest", mockHttp);
-            var process = await client.ProcessInstances.Query().List();
+            CamundaClient client = CamundaClient.Create("http://localhost:8080/engine-rest", mockHttp);
+            System.Collections.Generic.List<ProcessInstanceInfo> process = await client.ProcessInstances.Query().List();
 
             Assert.NotNull(process);
         }

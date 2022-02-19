@@ -1,11 +1,10 @@
 ﻿
-namespace Camunda.Api.Client
+namespace Camunda.Api.Client;
+
+public class VariableQueryParameter : ConditionQueryParameter
 {
-    public class VariableQueryParameter : ConditionQueryParameter
-    {
-        /// <summary>
-        /// Variable name
-        /// </summary>
-        public string Name;
-    }
+    /// <summary>
+    /// Variable name
+    /// </summary>
+    public string Name;
 }

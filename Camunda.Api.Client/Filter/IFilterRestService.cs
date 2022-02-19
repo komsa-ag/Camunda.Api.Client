@@ -4,35 +4,34 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Camunda.Api.Client.Filter
+namespace Camunda.Api.Client.Filter;
+
+internal interface IFilterRestService
 {
-    internal interface IFilterRestService
-    {
-        [Get("/filter")]
-        Task<List<FilterInfo.Response>> GetList(QueryDictionary query, int? firstResult, int? maxResults);
+    [Get("/filter")]
+    Task<List<FilterInfo.Response>> GetList(QueryDictionary query, int? firstResult, int? maxResults);
 
-        [Get("/filter/count")]
-        Task<CountResult> GetListCount(QueryDictionary query);
+    [Get("/filter/count")]
+    Task<CountResult> GetListCount(QueryDictionary query);
 
-        [Get("/filter/{id}")]
-        Task<FilterInfo.Response> Get(string id);
+    [Get("/filter/{id}")]
+    Task<FilterInfo.Response> Get(string id);
 
-        [Post("/filter/create")]
-        Task<FilterInfo.Response> Create([Body] FilterInfo.Request filterInfo);
+    [Post("/filter/create")]
+    Task<FilterInfo.Response> Create([Body] FilterInfo.Request filterInfo);
 
-        [Delete("/filter/{id}")]
-        Task Delete(string id);
+    [Delete("/filter/{id}")]
+    Task Delete(string id);
 
-        [Put("/filter/{id}")]
-        Task Update(string id, [Body] FilterInfo.Request filterInfo);
+    [Put("/filter/{id}")]
+    Task Update(string id, [Body] FilterInfo.Request filterInfo);
 
-        [Get("/filter/{id}/singleResult")]
-        Task<UserTaskInfo> Execute(string id);
+    [Get("/filter/{id}/singleResult")]
+    Task<UserTaskInfo> Execute(string id);
 
-        [Post("/filter/{id}/list")]
-        Task<List<UserTaskInfo>> ExecuteList(string id, int firstResult, int maxResults, [Body] TaskQuery query);
+    [Post("/filter/{id}/list")]
+    Task<List<UserTaskInfo>> ExecuteList(string id, int firstResult, int maxResults, [Body] TaskQuery query);
 
-        [Post("/filter/{id}/count")]
-        Task<CountResult> ExecuteCount(string id, [Body] TaskQuery query);
-    }
+    [Post("/filter/{id}/count")]
+    Task<CountResult> ExecuteCount(string id, [Body] TaskQuery query);
 }

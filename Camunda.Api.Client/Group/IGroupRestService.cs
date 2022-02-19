@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Camunda.Api.Client.Group
-{
+namespace Camunda.Api.Client.Group;
+
 	internal interface IGroupRestService
 	{
 		[Get("/group")]
@@ -24,10 +24,9 @@ namespace Camunda.Api.Client.Group
 		[Delete("/group/{id}")]
 		Task Delete(string id);
 
-        [Put("/group/{id}/members/{userId}")]
-        Task AddMember(string id, string userId);
+    [Put("/group/{id}/members/{userId}")]
+    Task AddMember(string id, string userId);
 
-        [Delete("/group/{id}/members/{userId}")]
-        Task RemoveMember(string id, string userId);
-    }
+    [Delete("/group/{id}/members/{userId}")]
+    Task RemoveMember(string id, string userId);
 }

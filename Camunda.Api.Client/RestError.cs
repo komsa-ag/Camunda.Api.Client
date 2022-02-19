@@ -1,8 +1,7 @@
-﻿namespace Camunda.Api.Client
+﻿namespace Camunda.Api.Client;
+
+public class RestError
 {
-    public class RestError
-    {
-        public string Type { get; set; }
-        public string Message { get; set; }
-    }
+    public string Type { get; set; }
+    public string Message { get; set; }
 }

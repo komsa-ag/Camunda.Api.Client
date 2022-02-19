@@ -1,9 +1,8 @@
-﻿namespace Camunda.Api.Client
-{
-    public class SuspensionState
-    {
-        public bool Suspended;
+﻿namespace Camunda.Api.Client;
 
-        public override string ToString() => Suspended.ToString();
-    }
+public class SuspensionState
+{
+    public bool Suspended;
+
+    public override string ToString() => Suspended.ToString();
 }

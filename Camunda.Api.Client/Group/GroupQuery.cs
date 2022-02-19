@@ -1,6 +1,6 @@
-﻿namespace Camunda.Api.Client.Group
-{
-    public class GroupQuery: QueryParameters
+﻿namespace Camunda.Api.Client.Group;
+
+public class GroupQuery: QueryParameters
 	{
 		/// <summary>
 		/// Filter by the id of the group.
@@ -49,4 +49,3 @@
 		Name,
 		Type
 	}
-}

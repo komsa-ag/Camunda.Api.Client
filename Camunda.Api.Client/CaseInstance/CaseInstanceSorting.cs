@@ -1,10 +1,9 @@
-﻿namespace Camunda.Api.Client.CaseInstance
+﻿namespace Camunda.Api.Client.CaseInstance;
+
+public enum CaseInstanceSorting
 {
-    public enum CaseInstanceSorting
-    {
-        CaseInstanceId,
-        CaseDefinitionKey,
-        CaseDefinitionId,
-        TenantId
-    }
+    CaseInstanceId,
+    CaseDefinitionKey,
+    CaseDefinitionId,
+    TenantId
 }

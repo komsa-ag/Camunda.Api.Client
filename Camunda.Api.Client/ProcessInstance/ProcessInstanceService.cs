@@ -1,33 +1,32 @@
 ﻿using Camunda.Api.Client.Batch;
 using System.Threading.Tasks;
 
-namespace Camunda.Api.Client.ProcessInstance
+namespace Camunda.Api.Client.ProcessInstance;
+
+public class ProcessInstanceService
 {
-    public class ProcessInstanceService
-    {
-        private IProcessInstanceRestService _api;
+    private IProcessInstanceRestService _api;
 
-        internal ProcessInstanceService(IProcessInstanceRestService api) { _api = api; }
+    internal ProcessInstanceService(IProcessInstanceRestService api) { _api = api; }
 
-        public QueryResource<ProcessInstanceQuery, ProcessInstanceInfo> Query(ProcessInstanceQuery query = null) =>
-            new QueryResource<ProcessInstanceQuery, ProcessInstanceInfo>(query, _api.GetList, _api.GetListCount);
+    public QueryResource<ProcessInstanceQuery, ProcessInstanceInfo> Query(ProcessInstanceQuery query = null) =>
+        new(query, _api.GetList, _api.GetListCount);
 
-        /// <param name="processInstanceId">The id of the process instance to be retrieved.</param>
-        public ProcessInstanceResource this[string processInstanceId] => new ProcessInstanceResource(_api, processInstanceId);
+    /// <param name="processInstanceId">The id of the process instance to be retrieved.</param>
+    public ProcessInstanceResource this[string processInstanceId] => new(_api, processInstanceId);
 
-        /// <summary>
-        /// Activate or suspend process instances with the given process definition id or process definition key.
-        /// </summary>
-        public Task UpdateSuspensionState(ProcessInstanceSuspensionState state) => _api.UpdateSuspensionState(state);
+    /// <summary>
+    /// Activate or suspend process instances with the given process definition id or process definition key.
+    /// </summary>
+    public Task UpdateSuspensionState(ProcessInstanceSuspensionState state) => _api.UpdateSuspensionState(state);
 
-        /// <summary>
-        /// Deletes multiple process instances asynchronously (batch).
-        /// </summary>
-        public Task<BatchInfo> Delete(DeleteProcessInstances deleteProcessInstances) => _api.DeleteProcessInstanceAsync(deleteProcessInstances);
+    /// <summary>
+    /// Deletes multiple process instances asynchronously (batch).
+    /// </summary>
+    public Task<BatchInfo> Delete(DeleteProcessInstances deleteProcessInstances) => _api.DeleteProcessInstanceAsync(deleteProcessInstances);
 
-        /// <summary>
-        /// Create a batch to set retries of jobs associated with given processes asynchronously.
-        /// </summary>
-        public Task<BatchInfo> SetRetriesByProcess(JobRetriesByProcess setJobRetries) => _api.SetRetriesByProcess(setJobRetries);
-    }
+    /// <summary>
+    /// Create a batch to set retries of jobs associated with given processes asynchronously.
+    /// </summary>
+    public Task<BatchInfo> SetRetriesByProcess(JobRetriesByProcess setJobRetries) => _api.SetRetriesByProcess(setJobRetries);
 }

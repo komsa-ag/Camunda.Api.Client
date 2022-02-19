@@ -9,429 +9,417 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 
-namespace Camunda.Api.Client
+namespace Camunda.Api.Client;
+
+[JsonObject]
+[JsonConverter(typeof(VariableValueJsonConverter))]
+[TypeConverter(typeof(VariableValueTypeConverter))]
+public class VariableValue : IConvertible
 {
-    [JsonObject]
-    [JsonConverter(typeof(VariableValueJsonConverter))]
-    [TypeConverter(typeof(VariableValueTypeConverter))]
-    public class VariableValue : IConvertible
+    /// <summary>Identifies the file's name as specified on value creation.</summary>
+    public const string ValueInfoFileName = "filename";
+    /// <summary>Identifies the file's mime type as specified on value creation.</summary>
+    public const string ValueInfoFileMimeType = "mimeType";
+    /// <summary>Identifies the file's encoding as specified on value creation.</summary>
+    public const string ValueInfoFileEncoding = "encoding";
+    /// <summary>Identifies the object's type name./// </summary>
+    public const string ValueInfoObjectTypeName = "objectTypeName";
+    /// <summary>Identifies the format in which the object is serialized.</summary>
+    public const string ValueInfoSerializationDataFormat = "serializationDataFormat";
+
+    private const string SerializedTypedObjectTypeName = "dto.SerializedTypedObject";
+    private const string JavaObjectTypeName = "java.lang.Object";
+
+    /// <summary>
+    /// The value type of the variable.
+    /// </summary>
+    [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+    public VariableType Type;
+
+    /// <summary>
+    /// Object containing additional, value-type-dependent properties.
+    /// </summary>
+    /// <remarks>
+    /// For serialized variables of type Object, the following properties can be provided:
+    ///  objectTypeName: A string representation of the object's type name.
+    ///  serializationDataFormat: The serialization format used to store the variable.
+    /// 
+    /// For serialized variables of type File, the following properties can be provided:
+    ///  filename: The name of the file.This is not the variable name but the name that will be used when downloading the file again.
+    ///  mimetype: The mime type of the file that is being uploaded.
+    ///  encoding: The encoding of the file that is being uploaded.
+    /// </remarks>
+    public Dictionary<string, object> ValueInfo;
+
+    /// <summary>
+    /// The variable's value.
+    /// </summary>
+    [JsonIgnore]
+    public object Value;
+
+    [JsonProperty("value"), DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private object RawValue
     {
-        /// <summary>Identifies the file's name as specified on value creation.</summary>
-        public const string ValueInfoFileName = "filename";
-        /// <summary>Identifies the file's mime type as specified on value creation.</summary>
-        public const string ValueInfoFileMimeType = "mimeType";
-        /// <summary>Identifies the file's encoding as specified on value creation.</summary>
-        public const string ValueInfoFileEncoding = "encoding";
-        /// <summary>Identifies the object's type name./// </summary>
-        public const string ValueInfoObjectTypeName = "objectTypeName";
-        /// <summary>Identifies the format in which the object is serialized.</summary>
-        public const string ValueInfoSerializationDataFormat = "serializationDataFormat";
-
-        private const string SerializedTypedObjectTypeName = "dto.SerializedTypedObject";
-        private const string JavaObjectTypeName = "java.lang.Object";
-
-        /// <summary>
-        /// The value type of the variable.
-        /// </summary>
-        [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public VariableType Type;
-
-        /// <summary>
-        /// Object containing additional, value-type-dependent properties.
-        /// </summary>
-        /// <remarks>
-        /// For serialized variables of type Object, the following properties can be provided:
-        ///  objectTypeName: A string representation of the object's type name.
-        ///  serializationDataFormat: The serialization format used to store the variable.
-        /// 
-        /// For serialized variables of type File, the following properties can be provided:
-        ///  filename: The name of the file.This is not the variable name but the name that will be used when downloading the file again.
-        ///  mimetype: The mime type of the file that is being uploaded.
-        ///  encoding: The encoding of the file that is being uploaded.
-        /// </remarks>
-        public Dictionary<string, object> ValueInfo;
-
-        /// <summary>
-        /// The variable's value.
-        /// </summary>
-        [JsonIgnore]
-        public object Value;
-
-        [JsonProperty("value"), DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private object rawValue
+        get
         {
-            get
+            if (Value != null)
             {
-                if (Value != null)
+                if (IsSerializedTypedObject)
                 {
-                    if (IsSerializedTypedObject)
-                    {
-                        return JsonConvert.SerializeObject( // wrapping into SerializedTypedObject
-                            new SerializedTypedObject() { Data = JsonConvert.SerializeObject(Value, typeof(object), TypeAwareJsonSerializerSettings) });
-                    }
-                    else if (Type == VariableType.Object)
-                    {
-                        // object serialize as a simple JSON
-                        return JsonConvert.SerializeObject(Value);
-                    }
+                    return JsonConvert.SerializeObject( // wrapping into SerializedTypedObject
+                        new SerializedTypedObject() { Data = JsonConvert.SerializeObject(Value, typeof(object), TypeAwareJsonSerializerSettings) });
                 }
-                return Value;
-            }
-            set
-            {
-                if (value != null)
+                else if (Type == VariableType.Object)
                 {
-                    if (IsSerializedTypedObject && value is JToken)
-                    {
-                        // this can throw exception when cannot find assembly...
-                        Value = JsonConvert.DeserializeObject(((SerializedTypedObject)GetValue(value, typeof(SerializedTypedObject))).Data, TypeAwareJsonSerializerSettings);
-                    }
-                    else
-                    {
-                        Value = value;
-                    }
+                    // object serialize as a simple JSON
+                    return JsonConvert.SerializeObject(Value);
+                }
+            }
+            return Value;
+        }
+        set
+        {
+            if (value != null)
+            {
+                if (IsSerializedTypedObject && value is JToken)
+                {
+                    // this can throw exception when cannot find assembly...
+                    Value = JsonConvert.DeserializeObject(((SerializedTypedObject)GetValue(value, typeof(SerializedTypedObject))).Data, TypeAwareJsonSerializerSettings);
+                }
+                else
+                {
+                    Value = value;
                 }
             }
         }
+    }
 
-        private static readonly JsonSerializerSettings TypeAwareJsonSerializerSettings =
-            new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto };
+    private static readonly JsonSerializerSettings TypeAwareJsonSerializerSettings =
+        new() { TypeNameHandling = TypeNameHandling.Auto };
 
-        private static readonly JsonSerializer TypeAwareJsonSerializer = 
-            JsonSerializer.Create(TypeAwareJsonSerializerSettings);
+    private static readonly JsonSerializer TypeAwareJsonSerializer =
+        JsonSerializer.Create(TypeAwareJsonSerializerSettings);
 
-        protected VariableValue() { } // use FromObject method to instantiate
+    protected VariableValue() { } // use FromObject method to instantiate
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool IsSerializedTypedObject =>
-            Type == VariableType.Object &&
-            ValueInfo != null &&
-            ValueInfo.ContainsKey(ValueInfoObjectTypeName) &&
-            ValueInfo.ContainsKey(ValueInfoSerializationDataFormat) &&
-            ValueInfo[ValueInfoObjectTypeName].Equals(SerializedTypedObjectTypeName) &&
-            ValueInfo[ValueInfoSerializationDataFormat].Equals(MediaTypes.Application.Json);
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private bool IsSerializedTypedObject =>
+        Type == VariableType.Object &&
+        ValueInfo != null &&
+        ValueInfo.ContainsKey(ValueInfoObjectTypeName) &&
+        ValueInfo.ContainsKey(ValueInfoSerializationDataFormat) &&
+        ValueInfo[ValueInfoObjectTypeName].Equals(SerializedTypedObjectTypeName) &&
+        ValueInfo[ValueInfoSerializationDataFormat].Equals(MediaTypes.Application.Json);
 
-        private class VariableValueJsonConverter : JsonConverter
+    private class VariableValueJsonConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType) => objectType.IsAssignableFrom(typeof(VariableValue));
+        public override bool CanRead => true;
+        public override bool CanWrite => false; // we are not handling serialization, use default converter
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            public override bool CanConvert(Type objectType) => objectType.IsAssignableFrom(typeof(VariableValue));
-            public override bool CanRead => true;
-            public override bool CanWrite => false; // we are not handling serialization, use default converter
+            VariableValue target = (VariableValue)Activator.CreateInstance(objectType, true);
+            object rawValue = null;
 
-            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+            while (reader.Read() && reader.TokenType != JsonToken.EndObject)
             {
-                var target = (VariableValue)Activator.CreateInstance(objectType, true);
-                object rawValue = null;
-
-                while (reader.Read() && reader.TokenType != JsonToken.EndObject)
+                if (reader.TokenType == JsonToken.PropertyName)
                 {
-                    if (reader.TokenType == JsonToken.PropertyName)
-                    {
-                        string property = (string)reader.Value;
+                    string property = (string)reader.Value;
 
-                        if (property.Equals(nameof(Value), StringComparison.OrdinalIgnoreCase))
+                    if (property.Equals(nameof(Value), StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (target.Type == VariableType.String)
                         {
-                            if (target.Type == VariableType.String)
-                            {
-                                // suppress JSON deserializer type guessing; string values read explicitly as string
-                                rawValue = reader.ReadAsString();
-                            }
-                            else if (target.Type == VariableType.Date)
-                            {
-                                rawValue = reader.ReadAsDateTime();
-                            }
-                            else if (target.Type == VariableType.Bytes || target.Type == VariableType.File)
-                            {
-                                rawValue = Convert.FromBase64String(reader.ReadAsString() ?? "");
-                            }
-                            else
-                            {
-                                reader.Read();
-                                rawValue = serializer.Deserialize(reader);
-                            }
+                            // suppress JSON deserializer type guessing; string values read explicitly as string
+                            rawValue = reader.ReadAsString();
                         }
-                        else if (PopulateMember(property, reader, serializer, target))
+                        else if (target.Type == VariableType.Date)
                         {
-                            // property successfully filled
+                            rawValue = reader.ReadAsDateTime();
+                        }
+                        else if (target.Type == VariableType.Bytes || target.Type == VariableType.File)
+                        {
+                            rawValue = Convert.FromBase64String(reader.ReadAsString() ?? "");
                         }
                         else
                         {
-                            Debug.Assert(false, "Unknown JSON property: " + property);
+                            reader.Read();
+                            rawValue = serializer.Deserialize(reader);
                         }
                     }
-                }
-
-                target.rawValue = rawValue;
-
-                return target;
-            }
-
-            protected virtual bool PopulateMember(string memberName, JsonReader reader, JsonSerializer serializer, object target)
-            {
-                BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy | BindingFlags.IgnoreCase;
-
-                Type targetType = target.GetType();
-
-                FieldInfo fieldInfo = targetType.GetField(memberName, bindingFlags);
-
-                if (fieldInfo != null)
-                {
-                    reader.Read();
-                    fieldInfo.SetValue(target, serializer.Deserialize(reader, fieldInfo.FieldType));
-                    return true;
-                }
-                else 
-                {
-                    PropertyInfo propInfo = targetType.GetProperty(memberName, bindingFlags);
-                    if (propInfo != null)
+                    else if (PopulateMember(property, reader, serializer, target))
                     {
-                        reader.Read();
-                        propInfo.SetValue(target, serializer.Deserialize(reader, propInfo.PropertyType));
-                        return true;
+                        // property successfully filled
+                    }
+                    else
+                    {
+                        Debug.Assert(false, "Unknown JSON property: " + property);
                     }
                 }
-
-                return false;
             }
 
-            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            target.RawValue = rawValue;
+
+            return target;
+        }
+
+        protected virtual bool PopulateMember(string memberName, JsonReader reader, JsonSerializer serializer, object target)
+        {
+            BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy | BindingFlags.IgnoreCase;
+
+            Type targetType = target.GetType();
+
+            FieldInfo fieldInfo = targetType.GetField(memberName, bindingFlags);
+
+            if (fieldInfo != null)
             {
-                throw new NotImplementedException();
+                reader.Read();
+                fieldInfo.SetValue(target, serializer.Deserialize(reader, fieldInfo.FieldType));
+                return true;
             }
-
-            private string StrToCamelCase(string str)
-            {
-                if (str?.Length > 1)
-                    return str.Substring(0, 1).ToLower() + str.Substring(1);
-                else
-                    return str?.ToLower();
-            }
-        }
-
-        public override string ToString()
-        {
-            if (Value == null)
-                return "null";
-            else if (Value is byte[])
-                return $"{{byte[{(Value as byte[]).Length}]}}";
-
-            return Value.ToString();
-        }
-
-        /// <summary>
-        /// Value instantiation. Underlying value can be primitive .NET type or any class serializable to JSON
-        /// </summary>
-        public static VariableValue FromObject(object value)
-        {
-            var val = new VariableValue();
-            val.SetTypedValue(value);
-            return val;
-        }
-
-        /// <summary>
-        /// Value instantiation. Creates file variable with content of file specified by <paramref name="path"/>
-        /// </summary>
-        /// <param name="path">Local path to the file.</param>
-        /// <param name="mimeType">The MIME type of the file that is being uploaded. Use constant from <see cref="MediaTypes"/></param>
-        /// <param name="charset">The encoding of the file that is being uploaded.</param>
-        public static VariableValue FromFile(string path, string mimeType, string charset = null)
-        {
-            return FromFile(File.ReadAllBytes(path), Path.GetFileName(path), mimeType, charset);
-        }
-
-        /// <summary>
-        /// Value instantiation. Creates file variable from <paramref name="content"/>
-        /// </summary>
-        /// <param name="mimeType">The MIME type of the file that is being uploaded. Use constant from <see cref="MediaTypes"/></param>
-        /// <param name="fileName">The name of the file. This is not the variable name but the name that will be used when downloading the file again.</param>
-        /// <param name="charset">The encoding of the file that is being uploaded.</param>
-        /// <param name="content">Content of the file that is being uploaded.</param>
-        public static VariableValue FromFile(byte[] content, string fileName, string mimeType, string charset = null)
-        {
-            var val = new VariableValue()
-            {
-                Type = VariableType.File,
-                Value = Convert.ToBase64String(content),
-                ValueInfo = new Dictionary<string, object>()
-                {
-                    [ValueInfoFileName] = fileName,
-                    [ValueInfoFileMimeType] = mimeType,
-                    [ValueInfoFileEncoding] = charset ?? "",
-                }
-            };
-
-            return val;
-        }
-
-        /// <summary>
-        /// Value instantiation. Creates text file variable with MIME text/plain
-        /// </summary>
-        /// <param name="path">Local path to the file.</param>
-        /// <param name="charset">The encoding of the file that is being uploaded.</param>
-        public static VariableValue FromTextFile(string path, string charset = "utf-8")
-        {
-            return FromFile(File.ReadAllBytes(path), Path.GetFileName(path), MediaTypes.Text.Plain, charset);
-        }
-
-        /// <summary>
-        /// Value instantiation. Creates binary file variable.
-        /// </summary>
-        /// <param name="path">Local path to the file.</param>
-        /// <param name="mimeType">The MIME type of the file that is being uploaded. Use constant from <see cref="MediaTypes"/></param>
-        public static VariableValue FromBinaryFile(string path, string mimeType = MediaTypes.Application.OctetStream)
-        {
-            return FromFile(File.ReadAllBytes(path), Path.GetFileName(path), mimeType, null);
-        }
-
-        /// <summary>
-        /// Convert <see cref="Value"/> to desired type.
-        /// </summary>
-        public T GetValue<T>() => (T)GetValue(typeof(T));
-
-        /// <summary>
-        /// Convert <see cref="Value"/> to desired type.
-        /// </summary>
-        public object GetValue(Type type)
-        {
-            return GetValue(Value, type);
-        }
-
-        static object GetValue(object source, Type type)
-        {
-            var jval = source as JToken;
-            if (jval != null)
-                return jval.ToObject(type, TypeAwareJsonSerializer);
-            else if (source != null && type.IsAssignableFrom(source.GetType()))
-                return source;
             else
-                return Convert.ChangeType(source, type, CultureInfo.InvariantCulture);
-        }
-
-        /// <summary>
-        /// Set the <see cref="Value"/>, <see cref="Type"/> and <see cref="ValueInfo"/> according to the given value object.
-        /// </summary>
-        protected void SetTypedValue(object value)
-        {
-            Value = value;
-            Type = VariableType.Object;
-
-            if (value == null)
-                Type = VariableType.Null;
-            else if (value is string)
-                Type = VariableType.String;
-            else if (value is DateTime)
-                Type = VariableType.Date;
-            else if (value is byte[])
-                Type = VariableType.Bytes;
-            else if (value is bool)
-                Type = VariableType.Boolean;
-            else if (value is byte || value is sbyte || value is char || value is short)
-                Type = VariableType.Short;
-            else if (value is int || value is ushort)
-                Type = VariableType.Integer;
-            else if (value is float || value is double)
-                Type = VariableType.Double;
-            else if (value is uint || value is long)
-                Type = VariableType.Long;
-            else if (value is ulong || value is decimal)
-                Type = VariableType.Number;
-
-            if (Type == VariableType.Object) {
-                ValueInfo = new Dictionary<string, object>()
+            {
+                PropertyInfo propInfo = targetType.GetProperty(memberName, bindingFlags);
+                if (propInfo != null)
                 {
-                    [ValueInfoSerializationDataFormat] = MediaTypes.Application.Json,
-                    [ValueInfoObjectTypeName] = JavaObjectTypeName
-                };
+                    reader.Read();
+                    propInfo.SetValue(target, serializer.Deserialize(reader, propInfo.PropertyType));
+                    return true;
+                }
             }
+
+            return false;
         }
 
-        /// <summary>
-        /// <see cref="Value"/> will be serialized with <see cref="SerializedTypedObject"/> wrapper.
-        /// JSON serialization uses setting <see cref="TypeNameHandling.Auto"/> resulting in JSON with $type
-        /// </summary>
-        public void EnableTypedObject()
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public override string ToString()
+    {
+        if (Value == null)
+            return "null";
+        else if (Value is byte[])
+            return $"{{byte[{(Value as byte[]).Length}]}}";
+
+        return Value.ToString();
+    }
+
+    /// <summary>
+    /// Value instantiation. Underlying value can be primitive .NET type or any class serializable to JSON
+    /// </summary>
+    public static VariableValue FromObject(object value)
+    {
+        VariableValue val = new VariableValue();
+        val.SetTypedValue(value);
+        return val;
+    }
+
+    /// <summary>
+    /// Value instantiation. Creates file variable with content of file specified by <paramref name="path"/>
+    /// </summary>
+    /// <param name="path">Local path to the file.</param>
+    /// <param name="mimeType">The MIME type of the file that is being uploaded. Use constant from <see cref="MediaTypes"/></param>
+    /// <param name="charset">The encoding of the file that is being uploaded.</param>
+    public static VariableValue FromFile(string path, string mimeType, string charset = null)
+    {
+        return FromFile(File.ReadAllBytes(path), Path.GetFileName(path), mimeType, charset);
+    }
+
+    /// <summary>
+    /// Value instantiation. Creates file variable from <paramref name="content"/>
+    /// </summary>
+    /// <param name="mimeType">The MIME type of the file that is being uploaded. Use constant from <see cref="MediaTypes"/></param>
+    /// <param name="fileName">The name of the file. This is not the variable name but the name that will be used when downloading the file again.</param>
+    /// <param name="charset">The encoding of the file that is being uploaded.</param>
+    /// <param name="content">Content of the file that is being uploaded.</param>
+    public static VariableValue FromFile(byte[] content, string fileName, string mimeType, string charset = null)
+    {
+        VariableValue val = new VariableValue()
+        {
+            Type = VariableType.File,
+            Value = Convert.ToBase64String(content),
+            ValueInfo = new Dictionary<string, object>()
+            {
+                [ValueInfoFileName] = fileName,
+                [ValueInfoFileMimeType] = mimeType,
+                [ValueInfoFileEncoding] = charset ?? "",
+            }
+        };
+
+        return val;
+    }
+
+    /// <summary>
+    /// Value instantiation. Creates text file variable with MIME text/plain
+    /// </summary>
+    /// <param name="path">Local path to the file.</param>
+    /// <param name="charset">The encoding of the file that is being uploaded.</param>
+    public static VariableValue FromTextFile(string path, string charset = "utf-8")
+    {
+        return FromFile(File.ReadAllBytes(path), Path.GetFileName(path), MediaTypes.Text.Plain, charset);
+    }
+
+    /// <summary>
+    /// Value instantiation. Creates binary file variable.
+    /// </summary>
+    /// <param name="path">Local path to the file.</param>
+    /// <param name="mimeType">The MIME type of the file that is being uploaded. Use constant from <see cref="MediaTypes"/></param>
+    public static VariableValue FromBinaryFile(string path, string mimeType = MediaTypes.Application.OctetStream)
+    {
+        return FromFile(File.ReadAllBytes(path), Path.GetFileName(path), mimeType, null);
+    }
+
+    /// <summary>
+    /// Convert <see cref="Value"/> to desired type.
+    /// </summary>
+    public T GetValue<T>() => (T)GetValue(typeof(T));
+
+    /// <summary>
+    /// Convert <see cref="Value"/> to desired type.
+    /// </summary>
+    public object GetValue(Type type) => GetValue(Value, type);
+
+    static object GetValue(object source, Type type)
+    {
+        if (source is JToken jval)
+            return jval.ToObject(type, TypeAwareJsonSerializer);
+        else if (source != null && type.IsAssignableFrom(source.GetType()))
+            return source;
+        else
+            return Convert.ChangeType(source, type, CultureInfo.InvariantCulture);
+    }
+
+    /// <summary>
+    /// Set the <see cref="Value"/>, <see cref="Type"/> and <see cref="ValueInfo"/> according to the given value object.
+    /// </summary>
+    protected void SetTypedValue(object value)
+    {
+        Value = value;
+        Type = VariableType.Object;
+
+        if (value == null)
+            Type = VariableType.Null;
+        else if (value is string)
+            Type = VariableType.String;
+        else if (value is DateTime)
+            Type = VariableType.Date;
+        else if (value is byte[])
+            Type = VariableType.Bytes;
+        else if (value is bool)
+            Type = VariableType.Boolean;
+        else if (value is byte || value is sbyte || value is char || value is short)
+            Type = VariableType.Short;
+        else if (value is int || value is ushort)
+            Type = VariableType.Integer;
+        else if (value is float || value is double)
+            Type = VariableType.Double;
+        else if (value is uint || value is long)
+            Type = VariableType.Long;
+        else if (value is ulong || value is decimal)
+            Type = VariableType.Number;
+
+        if (Type == VariableType.Object)
         {
             ValueInfo = new Dictionary<string, object>()
             {
                 [ValueInfoSerializationDataFormat] = MediaTypes.Application.Json,
-                [ValueInfoObjectTypeName] = SerializedTypedObjectTypeName
+                [ValueInfoObjectTypeName] = JavaObjectTypeName
             };
         }
-
-        TypeCode IConvertible.GetTypeCode() => Convert.GetTypeCode(Value);
-        bool IConvertible.ToBoolean(IFormatProvider provider) => Convert.ToBoolean(Value, provider);
-        char IConvertible.ToChar(IFormatProvider provider) => Convert.ToChar(Value, provider);
-        sbyte IConvertible.ToSByte(IFormatProvider provider) => Convert.ToSByte(Value, provider);
-        byte IConvertible.ToByte(IFormatProvider provider) => Convert.ToByte(Value, provider);
-        short IConvertible.ToInt16(IFormatProvider provider) => Convert.ToInt16(Value, provider);
-        ushort IConvertible.ToUInt16(IFormatProvider provider) => Convert.ToUInt16(Value, provider);
-        int IConvertible.ToInt32(IFormatProvider provider) => Convert.ToInt32(Value, provider);
-        uint IConvertible.ToUInt32(IFormatProvider provider) => Convert.ToUInt32(Value, provider);
-        long IConvertible.ToInt64(IFormatProvider provider) => Convert.ToInt64(Value, provider);
-        ulong IConvertible.ToUInt64(IFormatProvider provider) => Convert.ToUInt64(Value, provider);
-        float IConvertible.ToSingle(IFormatProvider provider) => Convert.ToSingle(Value, provider);
-        double IConvertible.ToDouble(IFormatProvider provider) => Convert.ToDouble(Value, provider);
-        decimal IConvertible.ToDecimal(IFormatProvider provider) => Convert.ToDecimal(Value, provider);
-        DateTime IConvertible.ToDateTime(IFormatProvider provider) => Convert.ToDateTime(Value, provider);
-        string IConvertible.ToString(IFormatProvider provider) => Convert.ToString(Value, provider);
-        object IConvertible.ToType(Type conversionType, IFormatProvider provider) => GetValue(conversionType);
-
-        private class SerializedTypedObject
-        {
-            [JsonProperty("data")] public string Data;
-        }
-
     }
 
-    /// https://docs.camunda.org/manual/7.9/user-guide/process-engine/variables/#supported-variable-values
-    public enum VariableType
+    /// <summary>
+    /// <see cref="Value"/> will be serialized with <see cref="SerializedTypedObject"/> wrapper.
+    /// JSON serialization uses setting <see cref="TypeNameHandling.Auto"/> resulting in JSON with $type
+    /// </summary>
+    public void EnableTypedObject()
     {
-        Boolean,
-        Bytes,
-        Short,
-        Integer,
-        Long,
-        Double,
-        Date,
-        String,
-        Number,
-
-        Null,
-
-        File,
-        Object,
-
-        Json,
-        Xml
+        ValueInfo = new Dictionary<string, object>()
+        {
+            [ValueInfoSerializationDataFormat] = MediaTypes.Application.Json,
+            [ValueInfoObjectTypeName] = SerializedTypedObjectTypeName
+        };
     }
 
-    public enum BinaryVariableType
+    TypeCode IConvertible.GetTypeCode() => Convert.GetTypeCode(Value);
+    bool IConvertible.ToBoolean(IFormatProvider provider) => Convert.ToBoolean(Value, provider);
+    char IConvertible.ToChar(IFormatProvider provider) => Convert.ToChar(Value, provider);
+    sbyte IConvertible.ToSByte(IFormatProvider provider) => Convert.ToSByte(Value, provider);
+    byte IConvertible.ToByte(IFormatProvider provider) => Convert.ToByte(Value, provider);
+    short IConvertible.ToInt16(IFormatProvider provider) => Convert.ToInt16(Value, provider);
+    ushort IConvertible.ToUInt16(IFormatProvider provider) => Convert.ToUInt16(Value, provider);
+    int IConvertible.ToInt32(IFormatProvider provider) => Convert.ToInt32(Value, provider);
+    uint IConvertible.ToUInt32(IFormatProvider provider) => Convert.ToUInt32(Value, provider);
+    long IConvertible.ToInt64(IFormatProvider provider) => Convert.ToInt64(Value, provider);
+    ulong IConvertible.ToUInt64(IFormatProvider provider) => Convert.ToUInt64(Value, provider);
+    float IConvertible.ToSingle(IFormatProvider provider) => Convert.ToSingle(Value, provider);
+    double IConvertible.ToDouble(IFormatProvider provider) => Convert.ToDouble(Value, provider);
+    decimal IConvertible.ToDecimal(IFormatProvider provider) => Convert.ToDecimal(Value, provider);
+    DateTime IConvertible.ToDateTime(IFormatProvider provider) => Convert.ToDateTime(Value, provider);
+    string IConvertible.ToString(IFormatProvider provider) => Convert.ToString(Value, provider);
+    object IConvertible.ToType(Type conversionType, IFormatProvider provider) => GetValue(conversionType);
+
+    private class SerializedTypedObject
     {
-        Bytes = VariableType.Bytes,
-        File = VariableType.File
+        [JsonProperty("data")] public string Data;
     }
 
-    class VariableValueTypeConverter : System.ComponentModel.TypeConverter
+}
+
+/// https://docs.camunda.org/manual/7.9/user-guide/process-engine/variables/#supported-variable-values
+public enum VariableType
+{
+    Boolean,
+    Bytes,
+    Short,
+    Integer,
+    Long,
+    Double,
+    Date,
+    String,
+    Number,
+
+    Null,
+
+    File,
+    Object,
+
+    Json,
+    Xml
+}
+
+public enum BinaryVariableType
+{
+    Bytes = VariableType.Bytes,
+    File = VariableType.File
+}
+
+class VariableValueTypeConverter : System.ComponentModel.TypeConverter
+{
+    public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
     {
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-        {
-            return true;
-        }
-
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            return true;
-        }
-
-        public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
-        {
-            VariableValue vv = (VariableValue)value;
-            return vv.GetValue(destinationType);
-        }
-
-        public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
-        {
-            return VariableValue.FromObject(value);
-        }
-
+        return true;
     }
+
+    public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+    {
+        return true;
+    }
+
+    public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
+    {
+        VariableValue vv = (VariableValue)value;
+        return vv.GetValue(destinationType);
+    }
+
+    public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+    {
+        return VariableValue.FromObject(value);
+    }
+
 }

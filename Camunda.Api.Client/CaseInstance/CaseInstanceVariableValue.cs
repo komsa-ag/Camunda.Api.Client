@@ -4,11 +4,10 @@ using Newtonsoft.Json;
 
 #endregion
 
-namespace Camunda.Api.Client.CaseInstance
+namespace Camunda.Api.Client.CaseInstance;
+
+public class CaseInstanceVariableValue : VariableValue
 {
-    public class CaseInstanceVariableValue : VariableValue
-    {
-        [JsonProperty("local")]
-        public bool Local;
-    }
+    [JsonProperty("local")]
+    public bool Local;
 }

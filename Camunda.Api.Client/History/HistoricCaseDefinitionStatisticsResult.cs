@@ -1,21 +1,20 @@
-﻿namespace Camunda.Api.Client.History
+﻿namespace Camunda.Api.Client.History;
+
+public class HistoricCaseDefinitionStatisticsResult
 {
-    public class HistoricCaseDefinitionStatisticsResult
-    {
-        public string Id;
+    public string Id;
 
-        public int Active;
+    public int Active;
 
-        public int Available;
+    public int Available;
 
-        public int Completed;
+    public int Completed;
 
-        public int Disabled;
+    public int Disabled;
 
-        public int Enabled;
+    public int Enabled;
 
-        public int Terminated;
+    public int Terminated;
 
-        public override string ToString() => Id;
-    }
+    public override string ToString() => Id;
 }

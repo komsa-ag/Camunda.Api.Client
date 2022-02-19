@@ -1,9 +1,8 @@
-﻿namespace Camunda.Api.Client.User
-{
-    internal class CreateUser
-    {
-        public UserProfileInfo Profile;
+﻿namespace Camunda.Api.Client.User;
 
-        public UserCredentialsInfo Credentials;
-    }
+internal class CreateUser
+{
+    public UserProfileInfo Profile;
+
+    public UserCredentialsInfo Credentials;
 }

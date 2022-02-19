@@ -1,7 +1,6 @@
-﻿namespace Camunda.Api.Client.Tenant
+﻿namespace Camunda.Api.Client.Tenant;
+
+public class TenantQuery : QueryParameters
 {
-    public class TenantQuery : QueryParameters
-    {
-        // TODO
-    }
+    // TODO
 }

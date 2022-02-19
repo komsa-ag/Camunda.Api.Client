@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;netcoreapp6.0;netcoreapp5.0;net48;net471</TargetFrameworks>
     <GenerateDocumentationFile Condition=" '$(Configuration)' == 'Release' ">true</GenerateDocumentationFile>
     <VersionSuffix></VersionSuffix>
     <VersionPrefix>2.6.1</VersionPrefix>
@@ -23,10 +23,12 @@
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Key.snk</AssemblyOriginatorKeyFile>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Refit" Version="5.0.23" />
+    <PackageReference Include="Refit" Version="6.0.38" />
+    <PackageReference Include="Refit.Newtonsoft.Json" Version="6.0.38" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
 
@@ -35,12 +37,12 @@
     <None Include="icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
-  
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <!-- wait for manually signing to complete -->
     <Exec Condition="$(SIGNTOOL_WAIT) != ''" Command="start cmd /c pause" />
   </Target>
-  
+
   <PropertyGroup Label="NuGet generation">
     <IsPackable>true</IsPackable>
     <PackageId>Komsa.Camunda.Api.Client</PackageId>
@@ -49,5 +51,5 @@
     <DevelopmentDependency>false</DevelopmentDependency>
     <VersionPrefix>$(VersionPrefix)</VersionPrefix>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>  
+  </PropertyGroup>
 </Project>
