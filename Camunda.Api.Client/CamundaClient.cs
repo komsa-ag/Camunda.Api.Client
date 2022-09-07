@@ -27,8 +27,6 @@ using Camunda.Api.Client.Tenant;
 using Camunda.Api.Client.User;
 using Camunda.Api.Client.UserTask;
 using Camunda.Api.Client.VariableInstance;
-
-using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 using Camunda.Api.Client.Filter;
 
 namespace Camunda.Api.Client
@@ -65,7 +63,7 @@ namespace Camunda.Api.Client
         private RefitSettings _refitSettings;
         private HttpMessageHandler _httpMessageHandler;
         internal static JsonSerializerSettings JsonSerializerSettings { get; private set; }
-        internal static IContentSerializer JsonContentSerializer { get; private set; }
+        internal static IHttpContentSerializer JsonContentSerializer { get; private set; }
 
         internal class HistoricApi
         {
@@ -97,7 +95,7 @@ namespace Camunda.Api.Client
             JsonSerializerSettings.Converters.Add(new StringEnumConverter());
             JsonSerializerSettings.Converters.Add(new CustomIsoDateTimeConverter());
 
-            JsonContentSerializer = JsonContentSerializer ?? new JsonContentSerializer(JsonSerializerSettings);
+            JsonContentSerializer = JsonContentSerializer ?? new NewtonsoftJsonContentSerializer(JsonSerializerSettings);
         }
 
         private class CustomIsoDateTimeConverter : Newtonsoft.Json.Converters.IsoDateTimeConverter
