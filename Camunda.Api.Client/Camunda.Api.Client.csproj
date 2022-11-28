@@ -4,8 +4,8 @@
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <GenerateDocumentationFile Condition=" '$(Configuration)' == 'Release' ">true</GenerateDocumentationFile>
     <VersionSuffix></VersionSuffix>
-    <VersionPrefix>2.7.0</VersionPrefix>
-    <FileVersion>2.7.0.0</FileVersion>
+    <VersionPrefix>2.7.1</VersionPrefix>
+    <FileVersion>2.7.1.0</FileVersion>
     <Product>Camunda REST API Client</Product>
     <Title>Camunda REST API Client</Title>
     <Authors>Jan Lucansky;KOMSA AG</Authors>
@@ -20,7 +20,7 @@
     <NoWarn>1701;1702;1705;1591</NoWarn>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <!-- Don't increment AssemblyVersion -->
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.7.1.0</AssemblyVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
