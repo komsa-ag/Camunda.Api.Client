@@ -35,6 +35,14 @@ namespace Camunda.Api.Client.ProcessDefinition
         /// </summary>
         public string DeploymentId;
         /// <summary>
+        /// Filter by the deploy time of the deployment the process definition belongs to. Only selects process definitions that have been deployed after (exclusive) a specific time.
+        /// </summary>
+        public DateTime? DeployedAfter;
+        /// <summary>
+        /// Filter by the deploy time of the deployment the process definition belongs to. Only selects process definitions that have been deployed at a specific time (exact match).
+        /// </summary>
+        public DateTime? DeployedAt;
+        /// <summary>
         /// Filter by process definition key, i.e. the id in the BPMN 2.0 XML. Exact match.
         /// </summary>
         public string Key;
