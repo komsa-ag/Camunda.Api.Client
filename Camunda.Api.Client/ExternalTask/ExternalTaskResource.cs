@@ -55,6 +55,11 @@ namespace Camunda.Api.Client.ExternalTask
         /// </summary>
         public Task ExtendLock(ExternalTaskExtendLock externalTaskExtendLock) => _api.ExtendLock(_externalTaskId, externalTaskExtendLock);
 
+        /// <summary>
+        /// Locks the task by ID
+        /// </summary>
+        public Task Lock(ExternalTaskLock externalTaskLock) => _api.Lock(_externalTaskId, externalTaskLock);
+
         public override string ToString() => _externalTaskId;
     }
 }
