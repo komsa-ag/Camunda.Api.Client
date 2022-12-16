@@ -10,6 +10,6 @@
         /// <summary>
         /// An amount of time (in milliseconds) to extend the lock by.
         /// </summary>
-        public long Duration;
+        public long LockDuration;
     }
 }
