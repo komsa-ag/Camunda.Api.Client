@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile Condition=" '$(Configuration)' == 'Release' ">true</GenerateDocumentationFile>
     <VersionSuffix></VersionSuffix>
-    <VersionPrefix>2.7.0</VersionPrefix>
-    <FileVersion>2.7.0.0</FileVersion>
+    <VersionPrefix>2.8.0</VersionPrefix>
+    <FileVersion>2.8.0.0</FileVersion>
     <Product>Camunda REST API Client</Product>
     <Title>Camunda REST API Client</Title>
     <Authors>Jan Lucansky;KOMSA AG</Authors>
@@ -46,7 +46,7 @@
   
   <PropertyGroup Label="NuGet generation">
     <IsPackable>true</IsPackable>
-    <PackageId>Komsa.Camunda.Api.Client</PackageId>
+    <PackageId>Philips.Camunda.Api.Client</PackageId>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <DevelopmentDependency>false</DevelopmentDependency>
