@@ -36,7 +36,7 @@ pipelines:
       - step:
           name: Build and push Philips.Camunda.Api.Client Nuget
           script:
-            - export BUILD_VERSION="2.8.${BITBUCKET_BUILD_NUMBER}-beta"
+            - export BUILD_VERSION="2.8.${BITBUCKET_BUILD_NUMBER}"
             - repouri=$(<repo.txt)
             - accesstoken=$(<pass.txt) 
             - dotnet nuget add source "${repouri}v3/index.json" --name codeartifact --password ${accesstoken} --username aws --store-password-in-clear-text
