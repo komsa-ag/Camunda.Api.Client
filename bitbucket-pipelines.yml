@@ -26,7 +26,7 @@ pipelines:
          name: Build Camunda.Api.Client
          script:
          - repouri=$(<repo.txt)
-         - accesstoken=$(<pass.txt) 
+         - accesstoken=$(<pass.txt)
          - dotnet nuget add source "${repouri}v3/index.json" --name codeartifact --password ${accesstoken} --username aws --store-password-in-clear-text
          - dotnet build Camunda.Api.Client.sln
          
@@ -40,6 +40,7 @@ pipelines:
             - repouri=$(<repo.txt)
             - accesstoken=$(<pass.txt) 
             - dotnet nuget add source "${repouri}v3/index.json" --name codeartifact --password ${accesstoken} --username aws --store-password-in-clear-text
+            - dotnet build Camunda.Api.Client.sln --configuration Release "/p:Version=${BUILD_VERSION}"
             - dotnet pack Camunda.Api.Client/Camunda.Api.Client.csproj --configuration Release "/p:Version=${BUILD_VERSION}"
             - dotnet nuget push "Camunda.Api.Client/bin/**/*.nupkg" --source codeartifact --api-key 0
           condition:
