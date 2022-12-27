@@ -4,7 +4,7 @@ using System.Net.Http.Headers;
 
 namespace Camunda.Api.Client
 {
-    internal class PlainTextContent : StringContent
+    public class PlainTextContent : StringContent
     {
         public PlainTextContent(string partName, string text) : base(text ?? "")
         {

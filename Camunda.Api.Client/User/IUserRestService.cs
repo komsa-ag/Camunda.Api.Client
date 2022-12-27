@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.User
 {
-    internal interface IUserRestService
+    public interface IUserRestService
     {
         [Get("/user")]
         Task<List<UserProfileInfo>> GetList(QueryDictionary query, int? firstResult, int? maxResults);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.ProcessInstance
 {
-    internal interface IProcessInstanceRestService
+    public interface IProcessInstanceRestService
     {
         [Get("/process-instance/{processInstanceId}")]
         Task<ProcessInstanceInfo> Get(string processInstanceId);

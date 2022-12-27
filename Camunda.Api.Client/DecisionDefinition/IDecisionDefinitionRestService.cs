@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.DecisionDefinition
 {
-    internal interface IDecisionDefinitionRestService
+    public interface IDecisionDefinitionRestService
     {
         [Get("/decision-definition")]
         Task<List<DecisionDefinitionInfo>> GetList(QueryDictionary query, int? firstResult, int? maxResults);

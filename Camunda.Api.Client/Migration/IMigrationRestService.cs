@@ -5,7 +5,7 @@ using Refit;
 
 namespace Camunda.Api.Client.Migration
 {
-    internal interface IMigrationRestService
+    public interface IMigrationRestService
     {
         [Post("/migration/generate")]
         Task<MigrationPlan> Generate([Body] MigrationPlanGeneration request);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.UserTask
 {
-    internal interface IUserTaskRestService
+    public interface IUserTaskRestService
     {
         [Get("/task/{id}")]
         Task<UserTaskInfo> Get(string id);
