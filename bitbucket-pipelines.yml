@@ -1,0 +1,45 @@
+image: mcr.microsoft.com/dotnet/sdk:6.0
+ 
+definitions:
+  services:
+  docker:
+  memory: 3072
+  steps:
+    - step: &authorizeNonProd
+        name: Authorize BitBucket into AWS CodeArtifact
+        image: atlassian/pipelines-awscli
+        script:
+          - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_NONPROD
+          - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_NONPROD
+          - export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
+          - export AWS_ACCOUNT_NUMBER=$AWS_ACCOUNT_NUMBER_NONPROD
+          - aws codeartifact get-repository-endpoint --domain philipsbtr-maestro --domain-owner ${AWS_ACCOUNT_NUMBER} --repository BTR.Libraries --format nuget --query repositoryEndpoint --output text > repo.txt
+          - aws codeartifact get-authorization-token --domain philipsbtr-maestro --domain-owner ${AWS_ACCOUNT_NUMBER} --query authorizationToken --output text > pass.txt
+        artifacts:
+          - repo.txt
+          - pass.txt
+pipelines:
+   pull-requests:
+    '**':
+      - step: *authorizeNonProd
+      - step:
+         name: Build Camunda.Api.Client
+         script:
+         - repouri=$(<repo.txt)
+         - accesstoken=$(<pass.txt)
+         - dotnet nuget add source "${repouri}v3/index.json" --name codeartifact --password ${accesstoken} --username aws --store-password-in-clear-text
+         - dotnet build Camunda.Api.Client.sln
+         
+   branches:
+    master:
+      - step: *authorizeNonProd
+      - step:
+          name: Build and push Philips.Camunda.Api.Client Nuget
+          script:
+            - export BUILD_VERSION="2.8.${BITBUCKET_BUILD_NUMBER}"
+            - repouri=$(<repo.txt)
+            - accesstoken=$(<pass.txt) 
+            - dotnet nuget add source "${repouri}v3/index.json" --name codeartifact --password ${accesstoken} --username aws --store-password-in-clear-text
+            - dotnet build Camunda.Api.Client.sln --configuration Release "/p:Version=${BUILD_VERSION}"
+            - dotnet pack Camunda.Api.Client/Camunda.Api.Client.csproj --configuration Release "/p:Version=${BUILD_VERSION}"
+            - dotnet nuget push "Camunda.Api.Client/bin/**/*.nupkg" --source codeartifact --api-key 0
