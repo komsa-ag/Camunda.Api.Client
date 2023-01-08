@@ -154,11 +154,17 @@ namespace Camunda.Api.Client
 
         public static RefitSettings GetRefitSettings(HttpMessageHandler handler)
         {
+            var refitSettings = GetRefitSettings();
+            refitSettings.HttpMessageHandlerFactory = () => handler;
+            return refitSettings;
+        }
+
+        public static RefitSettings GetRefitSettings()
+        {
             return new RefitSettings
             {
                 ContentSerializer = JsonContentSerializer,
-                UrlParameterFormatter = new CustomUrlParameterFormatter(),
-                HttpMessageHandlerFactory = () => handler
+                UrlParameterFormatter = new CustomUrlParameterFormatter()
             };
         }
 
