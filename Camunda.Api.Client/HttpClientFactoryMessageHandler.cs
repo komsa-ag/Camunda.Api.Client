@@ -2,14 +2,10 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-
-
-using Camunda.Api.Client;
-
 using Iana;
 using Newtonsoft.Json;
 
-namespace Philips.BTR.Maestro.ImagingClassic.Camunda
+namespace Camunda.Api.Client
 {
     /// <summary>
     /// See ErrorMessageHandler.cs

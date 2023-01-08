@@ -155,6 +155,7 @@ var jobs = await camunda.Jobs.Query(jobQuery).List();
 ### HttpClientFactory Usage
 Basic usage with HttpClientFactory in a windows service, in the ConfigureServices lambda.  This allows dependency injection for better unit testing, and also manages thread safety between multiple http clients.
 ```cs
+services.AddTransient<HttpClientFactoryMessageHandler>();
 RefitSettings refitSettings =
                 CamundaClient.GetRefitSettings(new HttpClientFactoryMessageHandler());
 services.AddRefitClient<T>(refitSettings)
@@ -164,6 +165,7 @@ services.AddRefitClient<T>(refitSettings)
 #### ErrorHandling
 You can additionally add an error handling policy for generic errors (HttpClientFactoryMessageHandler will not throw if it doesn't have specific data for the error message.')
 ```cs
+services.AddTransient<HttpClientFactoryMessageHandler>();
 RefitSettings refitSettings =
     CamundaClient.GetRefitSettings(new HttpClientFactoryMessageHandler());
 
