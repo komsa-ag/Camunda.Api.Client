@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.JobDefinition
 {
-    internal interface IJobDefinitionRestService
+    public interface IJobDefinitionRestService
     {
         [Get("/job-definition/{jobDefinitionId}")]
         Task<JobDefinitionInfo> Get(string jobDefinitionId);

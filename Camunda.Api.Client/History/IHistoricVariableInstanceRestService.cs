@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.History
 {
-    internal interface IHistoricVariableInstanceRestService
+    public interface IHistoricVariableInstanceRestService
     {
         [Get("/history/variable-instance/{id}")]
         Task<HistoricVariableInstance> Get(string id, bool deserializeValue = true);

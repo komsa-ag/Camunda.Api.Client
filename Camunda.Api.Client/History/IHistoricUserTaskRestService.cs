@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.History
 {
-    internal interface IHistoricUserTaskRestService
+    public interface IHistoricUserTaskRestService
     {
         [Post("/history/task")]
         Task<List<HistoricTask>> GetList([Body] HistoricTaskQuery query, int? firstResult, int? maxResults);

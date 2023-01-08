@@ -4,7 +4,7 @@ using System.Net.Http.Headers;
 
 namespace Camunda.Api.Client
 {
-    internal class ValueTypeContent : StringContent
+    public class ValueTypeContent : StringContent
     {
         public ValueTypeContent(string valueType) : base(valueType)
         {

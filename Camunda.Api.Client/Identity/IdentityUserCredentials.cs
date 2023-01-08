@@ -1,6 +1,6 @@
 ﻿namespace Camunda.Api.Client.Identity
 {
-    internal class IdentityUserCredentials
+    public class IdentityUserCredentials
     {
         /// <summary>
         /// The id of the user to verify

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.Execution
 {
-    internal interface IExecutionRestService
+    public interface IExecutionRestService
     {
         [Post("/execution")]
         Task<List<ExecutionInfo>> GetList([Body] ExecutionQuery query, int? firstResult, int? maxResults);

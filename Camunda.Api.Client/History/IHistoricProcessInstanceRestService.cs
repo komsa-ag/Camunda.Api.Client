@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.History
 {
-    internal interface IHistoricProcessInstanceRestService
+    public interface IHistoricProcessInstanceRestService
     {
         [Get("/history/process-instance/{id}")]
         Task<HistoricProcessInstance> Get(string id);

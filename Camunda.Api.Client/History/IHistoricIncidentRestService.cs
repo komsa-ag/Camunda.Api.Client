@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.History
 {
-    internal interface IHistoricIncidentRestService
+    public interface IHistoricIncidentRestService
     {
         [Get("/history/incident")]
         Task<List<HistoricIncident>> GetList(QueryDictionary query, int? firstResult, int? maxResults);

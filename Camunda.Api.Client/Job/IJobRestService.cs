@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.Job
 {
-    internal interface IJobRestService
+    public interface IJobRestService
     {
         [Get("/job/{jobId}")]
         Task<JobInfo> Get(string jobId);
