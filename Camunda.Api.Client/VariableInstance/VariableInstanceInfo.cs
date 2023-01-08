@@ -1,11 +1,18 @@
 ﻿namespace Camunda.Api.Client.VariableInstance
 {
+    /// <summary>
+    /// https://docs.camunda.org/manual/7.15/reference/rest/variable-instance/get/
+    /// </summary>
     public class VariableInstanceInfo : NamedVariableValue
     {
         /// <summary>
         /// The id of the variable instance.
         /// </summary>
         public string Id;
+        /// <summary>
+        /// The id of the process definition that this variable instance belongs to.
+        /// </summary>
+        public string ProcessDefinitionId; 
         /// <summary>
         /// The id of the process instance that this variable instance belongs to.
         /// </summary>
@@ -26,6 +33,10 @@
         /// The id of the task that this variable instance belongs to.
         /// </summary>
         public string TaskId;
+        /// <summary>
+        /// The id of the batch that this variable instance belongs to.
+        /// </summary>
+        public string BatchId;
         /// <summary>
         /// The id of the activity instance that this variable instance belongs to.
         /// </summary>
