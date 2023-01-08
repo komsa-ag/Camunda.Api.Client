@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.ExternalTask
 {
-    internal interface IExternalTaskRestService
+    public interface IExternalTaskRestService
     {
         [Get("/external-task/{externalTaskId}")]
         Task<ExternalTaskInfo> Get(string externalTaskId);

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.History
 {
-    internal interface IHistoricUserOperationLogRestService
+    public interface IHistoricUserOperationLogRestService
     {
         [Get("/history/user-operation/{id}")]
         Task<HistoricUserOperationLog> Get(string id);

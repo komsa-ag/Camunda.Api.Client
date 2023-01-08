@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.CaseExecution
 {
-    internal interface ICaseExecutionRestService
+    public interface ICaseExecutionRestService
     {
         [Get("/case-execution")]
         Task<List<CaseExecutionInfo>> GetList(QueryDictionary query, int? firstResult, int? maxResults);

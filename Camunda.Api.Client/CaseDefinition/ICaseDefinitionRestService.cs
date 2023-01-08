@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.CaseDefinition
 {
-    internal interface ICaseDefinitionRestService
+    public interface ICaseDefinitionRestService
     {
         [Get("/case-definition")]
         Task<List<CaseDefinitionInfo>> GetList(QueryDictionary query, int? firstResult, int? maxResults);

@@ -1,6 +1,6 @@
 ﻿namespace Camunda.Api.Client.User
 {
-    internal class UserCredentialsInfo
+    public class UserCredentialsInfo
     {
         /// <summary>
         /// The user's new password.

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.History
 {
-    internal interface IHistoricProcessDefinitionRestService
+    public interface IHistoricProcessDefinitionRestService
     {
         [Get("/history/process-definition/{id}/statistics")]
         Task<List<HistoricActivityStatisticsResult>> GetHistoricActivityStatistics(string id, QueryDictionary query);

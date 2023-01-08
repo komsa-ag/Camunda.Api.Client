@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.History
 {
-    internal interface IHistoricExternalTaskLogRestService
+    public interface IHistoricExternalTaskLogRestService
     {
         [Post("/history/external-task-log")]
         Task<List<HistoricExternalTaskLog>> GetList([Body] HistoricExternalTaskLogQuery query, int? firstResult, int? maxResults);

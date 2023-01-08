@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.Identity
 {
-    internal interface IIdentityRestService
+    public interface IIdentityRestService
 	{
 		[Get("/identity/groups")]
 		Task<IdentityGroupMembership> GetMembership(QueryDictionary query);

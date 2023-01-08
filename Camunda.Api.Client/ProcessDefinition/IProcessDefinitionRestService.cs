@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.ProcessDefinition
 {
-    internal interface IProcessDefinitionRestService
+    public interface IProcessDefinitionRestService
     {
         [Get("/process-definition")]
         Task<List<ProcessDefinitionInfo>> GetList(QueryDictionary query, int? firstResult, int? maxResults);

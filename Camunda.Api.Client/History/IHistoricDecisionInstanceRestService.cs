@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.History
 {
-    internal interface IHistoricDecisionInstanceRestService
+    public interface IHistoricDecisionInstanceRestService
     {
         [Get("/history/decision-instance/{id}")]
         Task<HistoricDecisionInstance> Get(string id);

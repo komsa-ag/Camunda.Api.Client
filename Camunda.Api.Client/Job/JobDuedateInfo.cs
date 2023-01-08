@@ -2,7 +2,7 @@
 
 namespace Camunda.Api.Client.Job
 {
-    internal class JobDuedateInfo
+    public class JobDuedateInfo
     {
         /// <summary>
         /// The date to set when the job has the next execution.

@@ -1,7 +1,7 @@
 ﻿
 namespace Camunda.Api.Client
 {
-    internal class PriorityInfo
+    public class PriorityInfo
     {
         public long Priority;
     }
