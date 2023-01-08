@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.Message
 {
-    internal interface IMessageRestService
+    public interface IMessageRestService
     {
         [Post("/message")]
         Task<List<CorrelationResult>> DeliverMessage([Body] CorrelationMessage message);

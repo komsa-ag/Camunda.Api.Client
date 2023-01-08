@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.Tenant
 {
-    internal interface ITenantRestService
+    public interface ITenantRestService
     {
         [Get("/tenant")]
         Task<List<TenantInfo>> GetList(QueryDictionary query, int? firstResult, int? maxResults);

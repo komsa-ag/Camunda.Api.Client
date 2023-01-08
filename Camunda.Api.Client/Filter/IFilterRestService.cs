@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.Filter
 {
-    internal interface IFilterRestService
+    public interface IFilterRestService
     {
         [Get("/filter")]
         Task<List<FilterInfo.Response>> GetList(QueryDictionary query, int? firstResult, int? maxResults);

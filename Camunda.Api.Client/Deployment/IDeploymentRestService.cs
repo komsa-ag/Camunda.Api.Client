@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.Deployment
 {
-    internal interface IDeploymentRestService
+    public interface IDeploymentRestService
     {
         [Get("/deployment")]
         Task<List<DeploymentInfo>> GetList(QueryDictionary query, int? firstResult, int? maxResults);

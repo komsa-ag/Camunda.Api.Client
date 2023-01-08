@@ -1,6 +1,6 @@
 ﻿namespace Camunda.Api.Client
 {
-    internal class CountResult
+    public class CountResult
     {
         /// <summary>
         /// The number of matching items.

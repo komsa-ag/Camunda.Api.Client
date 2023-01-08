@@ -9,7 +9,7 @@ using Refit;
 
 namespace Camunda.Api.Client.CaseInstance
 {
-    internal interface ICaseInstanceRestService
+    public interface ICaseInstanceRestService
     {
         [Get("/case-instance/{id}/variables")]
         Task<Dictionary<string, VariableValue>> GetVariables(string id, bool? deserializeValues);

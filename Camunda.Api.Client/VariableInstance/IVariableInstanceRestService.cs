@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.VariableInstance
 {
-    internal interface IVariableInstanceRestService
+    public interface IVariableInstanceRestService
     {
         [Get("/variable-instance/{variableInstanceId}")]
         Task<VariableInstanceInfo> Get(string variableInstanceId);
