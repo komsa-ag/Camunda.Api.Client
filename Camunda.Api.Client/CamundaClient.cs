@@ -149,11 +149,16 @@ namespace Camunda.Api.Client
         {
             _httpMessageHandler = _httpMessageHandler ?? new ErrorMessageHandler();
 
-            _refitSettings = _refitSettings ?? new RefitSettings
+            _refitSettings = _refitSettings ?? GetRefitSettings(this._httpMessageHandler);
+        }
+
+        public static RefitSettings GetRefitSettings(HttpMessageHandler handler)
+        {
+            return new RefitSettings
             {
                 ContentSerializer = JsonContentSerializer,
                 UrlParameterFormatter = new CustomUrlParameterFormatter(),
-                HttpMessageHandlerFactory = () => _httpMessageHandler
+                HttpMessageHandlerFactory = () => handler
             };
         }
 

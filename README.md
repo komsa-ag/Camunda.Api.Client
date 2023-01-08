@@ -152,5 +152,38 @@ jobQuery.DueDates.Add(new ConditionQueryParameter()
 var jobs = await camunda.Jobs.Query(jobQuery).List();
 ```
 
+### HttpClientFactory Usage
+Basic usage with HttpClientFactory in a windows service, in the ConfigureServices lambda.  This allows dependency injection for better unit testing, and also manages thread safety between multiple http clients.
+```cs
+RefitSettings refitSettings =
+                CamundaClient.GetRefitSettings(new HttpClientFactoryMessageHandler());
+services.AddRefitClient<T>(refitSettings)
+    .ConfigureHttpClient(c => c.BaseAddress = camundaAddress)
+    .AddHttpMessageHandler<HttpClientFactoryMessageHandler>();
+```
+#### ErrorHandling
+You can additionally add an error handling policy for generic errors (HttpClientFactoryMessageHandler will not throw if it doesn't have specific data for the error message.')
+```cs
+RefitSettings refitSettings =
+    CamundaClient.GetRefitSettings(new HttpClientFactoryMessageHandler());
+
+services.AddRefitClient<T>(refitSettings)
+    .ConfigureHttpClient(c => c.BaseAddress = camundaAddress)
+    .AddHttpMessageHandler<HttpClientFactoryMessageHandler>()
+    .AddTransientHttpErrorPolicy(
+        builder => builder.WaitAndRetryAsync(
+        new[]
+        {
+            TimeSpan.FromMilliseconds(500),
+            TimeSpan.FromSeconds(2),
+            TimeSpan.FromSeconds(10)
+        }));
+```
+See Poly documentation for all the alternative policies.
+
+#### References:
+[Using Refit with HttpClientFactory](https://github.com/reactiveui/refit#using-httpclientfactory)
+[Adding Error Policies with Polly](https://github.com/App-vNext/Polly/wiki/Polly-and-HttpClientFactory)
+
 ## License
 This project is made available under the MIT license. See [LICENSE](LICENSE) for details.
