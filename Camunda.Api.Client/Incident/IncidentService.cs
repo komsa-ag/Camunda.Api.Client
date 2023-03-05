@@ -12,7 +12,7 @@
         public QueryResource<IncidentQuery, IncidentInfo> Query(IncidentQuery query = null) =>
             new QueryResource<IncidentQuery, IncidentInfo>(
                 query, 
-                (q, f, m) => _api.GetList(q, f, m),
-                q => _api.GetListCount(q));
+                (q, f, m, c) => _api.GetList(q, f, m, c),
+                (q, c) => _api.GetListCount(q, c));
     }
 }

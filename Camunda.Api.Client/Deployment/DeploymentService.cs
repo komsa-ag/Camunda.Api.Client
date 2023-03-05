@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.Deployment
@@ -14,8 +15,8 @@ namespace Camunda.Api.Client.Deployment
         public QueryResource<DeploymentQuery, DeploymentInfo> Query(DeploymentQuery query = null) =>
             new QueryResource<DeploymentQuery, DeploymentInfo>(
                 query,
-                (q, f, m) => _api.GetList(q, f, m),
-                q => _api.GetListCount(q));
+                (q, f, m, c) => _api.GetList(q, f, m, c),
+                (q, c) => _api.GetListCount(q, c));
 
         /// <summary>
         /// Create a deployment.
@@ -30,13 +31,14 @@ namespace Camunda.Api.Client.Deployment
         /// <param name="deploymentSource">The source for the deployment to be created.</param>
         /// <param name="duplicateFiltering">A flag indicating whether the process engine should perform duplicate checking for the deployment or not. This allows you to check if a deployment with the same name and the same resouces already exists and if true, not create a new deployment but instead return the existing deployment. The default value is false.</param>
         /// <param name="tenantId">The tenant id for the deployment to be created.</param>
-        public Task<DeploymentInfo> Create(string deploymentName, bool duplicateFiltering, bool changedOnly, string deploymentSource, string tenantId = null,
+        public Task<DeploymentInfo> Create(string deploymentName, bool duplicateFiltering, bool changedOnly, string deploymentSource, string tenantId = null, CancellationToken cancellationToken = default,
             params ResourceDataContent[] resources) => _api.Create(
                 new HttpContentMultipartItem<PlainTextContent>(new PlainTextContent("deployment-name", deploymentName)),
                 new HttpContentMultipartItem<PlainTextContent>(new PlainTextContent("enable-duplicate-filtering", duplicateFiltering.ToString().ToLower())),
                 new HttpContentMultipartItem<PlainTextContent>(new PlainTextContent("deploy-changed-only", changedOnly.ToString().ToLower())),
                 new HttpContentMultipartItem<PlainTextContent>(new PlainTextContent("deployment-source", deploymentSource ?? "undefined")),
                 tenantId == null ? null : new HttpContentMultipartItem<PlainTextContent>(new PlainTextContent("tenant-id", tenantId)),
+                cancellationToken,
                 resources.Select(r => new HttpContentMultipartItem<ResourceDataContent>(r)).ToArray());
 
 
@@ -49,8 +51,8 @@ namespace Camunda.Api.Client.Deployment
         /// </remarks>
         /// <param name="deploymentName">The name for the deployment to be created.</param>
         /// <param name="resources">The binary data to create the deployment resource. It is possible to have more than one form part with different form part names for the binary data to create a deployment.</param>
-        public Task<DeploymentInfo> Create(string deploymentName, 
+        public Task<DeploymentInfo> Create(string deploymentName, CancellationToken cancellationToken,
             params ResourceDataContent[] resources) =>
-                Create(deploymentName, false, false, null, null, resources);
+                Create(deploymentName, false, false, null, null, cancellationToken, resources);
     }
 }

@@ -11,8 +11,8 @@ namespace Camunda.Api.Client.User
         public QueryResource<UserQuery, UserProfileInfo> Query(UserQuery query = null) =>
             new QueryResource<UserQuery, UserProfileInfo>(
                 query, 
-                (q, f, m) => _api.GetList(q, f, m),
-                q => _api.GetListCount(q));
+                (q, f, m, c) => _api.GetList(q, f, m, c),
+                (q, c) => _api.GetListCount(q, c));
 
         /// <param name="userId">The id of the user to be retrieved.</param>
         public UserResource this[string userId] => new UserResource(_api, userId);

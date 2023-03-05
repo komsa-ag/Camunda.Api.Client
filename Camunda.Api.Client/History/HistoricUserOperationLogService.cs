@@ -30,8 +30,8 @@ namespace Camunda.Api.Client.History
         public QueryResource<HistoricUserOperationLogQuery, HistoricUserOperationLog> Query(HistoricUserOperationLogQuery query = null) =>
             new QueryResource<HistoricUserOperationLogQuery, HistoricUserOperationLog>(
                 query,
-                (q, f, m) => _api.GetList(q, f, m), 
-                q => _api.GetListCount(q));
+                (q, f, m, c) => _api.GetList(q, f, m, c),
+                (q, c) => _api.GetListCount(q, c));
 
         /// <param name="historicOperationId">The id of the operation log entry.</param>
         public HistoricUserOperationLogResource this[string historicOperationId] => new HistoricUserOperationLogResource(_api, historicOperationId);

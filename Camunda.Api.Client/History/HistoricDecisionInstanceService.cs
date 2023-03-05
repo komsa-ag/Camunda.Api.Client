@@ -13,8 +13,8 @@
             HistoricDecisionInstanceQuery query = null) =>
             new QueryResource<HistoricDecisionInstanceQuery, HistoricDecisionInstance>(
                 query,
-                (q, f, m) => _api.GetList(q, f, m), 
-                q => _api.GetListCount(q));
+                (q, f, m, c) => _api.GetList(q, f, m, c),
+                (q, c) => _api.GetListCount(q, c));
 
         /// <param name="decisionInstanceId">The id of the historic decision instance to be retrieved.</param>
         public HistoricDecisionInstanceResource this[string decisionInstanceId] => new HistoricDecisionInstanceResource(_api, decisionInstanceId);

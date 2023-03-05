@@ -14,8 +14,8 @@ namespace Camunda.Api.Client.Filter
         public QueryResource<FilterQuery, FilterInfo.Response> Query(FilterQuery query = null) =>
             new QueryResource<FilterQuery, FilterInfo.Response>(
                 query,
-                (q, f, m) => _api.GetList(q, f, m),
-                q => _api.GetListCount(q));
+                (q, f, m, c) => _api.GetList(q, f, m, c),
+                (q, c) => _api.GetListCount(q, c));
 
         /// <summary>
         /// Creates a new filter.

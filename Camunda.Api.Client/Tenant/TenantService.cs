@@ -14,8 +14,8 @@ namespace Camunda.Api.Client.Tenant
         public QueryResource<TenantQuery, TenantInfo> Query(TenantQuery query = null) =>
             new QueryResource<TenantQuery, TenantInfo>(
                 query, 
-                (q, f, m) => _api.GetList(q, f, m),
-                q => _api.GetListCount(q));
+                (q, f, m, c) => _api.GetList(q, f, m, c),
+                (q, c) => _api.GetListCount(q, c));
 
         public Task Create(TenantInfo tenant) =>
             _api.Create(tenant);

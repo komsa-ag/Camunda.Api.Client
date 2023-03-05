@@ -1,5 +1,6 @@
 ﻿using Camunda.Api.Client.CaseInstance;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.CaseDefinition
@@ -16,13 +17,13 @@ namespace Camunda.Api.Client.CaseDefinition
             _tenantId = tenantId;
         }
 
-        public override Task<CaseDefinitionInfo> Get() => _api.GetByKeyAndTenantId(_caseDefinitionKey, _tenantId);
+        public override Task<CaseDefinitionInfo> Get(CancellationToken cancellationToken = default) => _api.GetByKeyAndTenantId(_caseDefinitionKey, _tenantId, cancellationToken);
 
-        public override Task<CaseDefinitionDiagram> GetXml() => _api.GetXmlByKeyAndTenantId(_caseDefinitionKey, _tenantId);
+        public override Task<CaseDefinitionDiagram> GetXml(CancellationToken cancellationToken = default) => _api.GetXmlByKeyAndTenantId(_caseDefinitionKey, _tenantId, cancellationToken);
 
-        public override async Task<HttpContent> GetDiagram() => (await _api.GetDiagramByKeyAndTenantId(_caseDefinitionKey, _tenantId)).Content;
+        public override async Task<HttpContent> GetDiagram(CancellationToken cancellationToken = default) => (await _api.GetDiagramByKeyAndTenantId(_caseDefinitionKey, _tenantId, cancellationToken)).Content;
 
-        public override Task<CaseInstanceInfo> CreateCaseInstance(CreateCaseInstance parameters) => _api.CreateCaseInstanceByKeyAndTenantId(_caseDefinitionKey, _tenantId, parameters);
+        public override Task<CaseInstanceInfo> CreateCaseInstance(CreateCaseInstance parameters, CancellationToken cancellationToken = default) => _api.CreateCaseInstanceByKeyAndTenantId(_caseDefinitionKey, _tenantId, parameters, cancellationToken);
 
         public override string ToString() => _caseDefinitionKey;
     }

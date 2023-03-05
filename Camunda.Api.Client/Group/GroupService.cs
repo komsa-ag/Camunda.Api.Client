@@ -14,8 +14,8 @@ namespace Camunda.Api.Client.Group
         public QueryResource<GroupQuery, GroupInfo> Query(GroupQuery query = null) =>
             new QueryResource<GroupQuery, GroupInfo>(
                 query, 
-                (q, f, m) => _api.GetList(q, f, m),
-                q => _api.GetListCount(q));
+                (q, f, m, c) => _api.GetList(q, f, m, c),
+                (q, c) => _api.GetListCount(q, c));
 
 		/// <param name="groupId">The id of the group to be retrieved.</param>
 		public GroupResource this[string groupId] => new GroupResource(_api, groupId);

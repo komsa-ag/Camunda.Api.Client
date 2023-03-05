@@ -1,5 +1,6 @@
 ﻿using Camunda.Api.Client.CaseInstance;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Camunda.Api.Client.CaseDefinition
@@ -15,13 +16,13 @@ namespace Camunda.Api.Client.CaseDefinition
             _caseDefinitionKey = caseDefinitionKey;
         }
 
-        public override Task<CaseDefinitionInfo> Get() => _api.GetByKey(_caseDefinitionKey);
+        public override Task<CaseDefinitionInfo> Get(CancellationToken cancellationToken = default) => _api.GetByKey(_caseDefinitionKey, cancellationToken);
 
-        public override Task<CaseDefinitionDiagram> GetXml() => _api.GetXmlByKey(_caseDefinitionKey);
+        public override Task<CaseDefinitionDiagram> GetXml(CancellationToken cancellationToken = default) => _api.GetXmlByKey(_caseDefinitionKey, cancellationToken);
 
-        public override async Task<HttpContent> GetDiagram() => (await _api.GetDiagramByKey(_caseDefinitionKey)).Content;
+        public override async Task<HttpContent> GetDiagram(CancellationToken cancellationToken = default) => (await _api.GetDiagramByKey(_caseDefinitionKey, cancellationToken)).Content;
 
-        public override Task<CaseInstanceInfo> CreateCaseInstance(CreateCaseInstance parameters) => _api.CreateCaseInstanceByKey(_caseDefinitionKey, parameters);
+        public override Task<CaseInstanceInfo> CreateCaseInstance(CreateCaseInstance parameters, CancellationToken cancellationToken = default) => _api.CreateCaseInstanceByKey(_caseDefinitionKey, parameters, cancellationToken);
 
         public override string ToString() => _caseDefinitionKey;
     }

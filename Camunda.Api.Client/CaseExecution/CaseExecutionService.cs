@@ -14,7 +14,7 @@
         public QueryResource<CaseExecutionQuery, CaseExecutionInfo> Query(CaseExecutionQuery query = null) =>
             new QueryResource<CaseExecutionQuery, CaseExecutionInfo>(
                 query,
-                (q, f, m) => _api.GetList(q, f, m),
-                q => _api.GetListCount(q));
+                (q, f, m, c) => _api.GetList(q, f, m, c),
+                (q, c) => _api.GetListCount(q, c));
     }
 }
