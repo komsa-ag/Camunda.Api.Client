@@ -57,8 +57,8 @@ namespace Camunda.Api.Client
 
         private HistoricApi _historicApi;
 
-        private string _hostUrl;
-        private HttpClient _httpClient;
+        private readonly string _hostUrl;
+        private readonly HttpClient _httpClient;
 
         private RefitSettings _refitSettings;
         private HttpMessageHandler _httpMessageHandler;
@@ -86,7 +86,7 @@ namespace Camunda.Api.Client
 
         static CamundaClient()
         {
-            JsonSerializerSettings = JsonSerializerSettings ?? new JsonSerializerSettings
+            JsonSerializerSettings ??= new JsonSerializerSettings
             {
                 ContractResolver = new CustomCamelCasePropertyNamesContractResolver(),
                 NullValueHandling = NullValueHandling.Ignore, // do not send empty fields
@@ -95,7 +95,7 @@ namespace Camunda.Api.Client
             JsonSerializerSettings.Converters.Add(new StringEnumConverter());
             JsonSerializerSettings.Converters.Add(new CustomIsoDateTimeConverter());
 
-            JsonContentSerializer = JsonContentSerializer ?? new NewtonsoftJsonContentSerializer(JsonSerializerSettings);
+            JsonContentSerializer ??= new NewtonsoftJsonContentSerializer(JsonSerializerSettings);
         }
 
         private class CustomIsoDateTimeConverter : Newtonsoft.Json.Converters.IsoDateTimeConverter
@@ -147,9 +147,9 @@ namespace Camunda.Api.Client
 
         private void Initialize()
         {
-            _httpMessageHandler = _httpMessageHandler ?? new ErrorMessageHandler();
+            _httpMessageHandler ??= new ErrorMessageHandler();
 
-            _refitSettings = _refitSettings ?? new RefitSettings
+            _refitSettings ??= new RefitSettings
             {
                 ContentSerializer = JsonContentSerializer,
                 UrlParameterFormatter = new CustomUrlParameterFormatter(),
@@ -263,69 +263,69 @@ namespace Camunda.Api.Client
         }
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/case-definition/"/>
-        public CaseDefinitionService CaseDefinitions => new CaseDefinitionService(_caseDefinitionRestService.Value);
+        public CaseDefinitionService CaseDefinitions => new(_caseDefinitionRestService.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/case-execution/"/>
-        public CaseExecutionService CaseExecutions => new CaseExecutionService(_caseExecutionRestService.Value);
+        public CaseExecutionService CaseExecutions => new(_caseExecutionRestService.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/case-instance/"/>
-        public CaseInstanceService CaseInstances => new CaseInstanceService(_caseInstanceRestService.Value);
+        public CaseInstanceService CaseInstances => new(_caseInstanceRestService.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/decision-definition/"/>
-        public DecisionDefinitionService DecisionDefinitions => new DecisionDefinitionService(_decisionDefinitionRestService.Value);
+        public DecisionDefinitionService DecisionDefinitions => new(_decisionDefinitionRestService.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/deployment/"/>
-        public DeploymentService Deployments => new DeploymentService(_deploymentApi.Value);
+        public DeploymentService Deployments => new(_deploymentApi.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/execution/"/>
-        public ExecutionService Executions => new ExecutionService(_executionApi.Value);
+        public ExecutionService Executions => new(_executionApi.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/external-task/"/>
-        public ExternalTaskService ExternalTasks => new ExternalTaskService(_externalTaskApi.Value);
+        public ExternalTaskService ExternalTasks => new(_externalTaskApi.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/group/"/>
-        public GroupService Group => new GroupService(_groupApi.Value);
+        public GroupService Group => new(_groupApi.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/history/"/>
-        public HistoryService History => new HistoryService(_historicApi);
+        public HistoryService History => new(_historicApi);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/incident/"/>
-        public IncidentService Incidents => new IncidentService(_incidentApi.Value);
+        public IncidentService Incidents => new(_incidentApi.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/job-definition/"/>
-        public JobDefinitionService JobDefinitions => new JobDefinitionService(_jobDefinitionApi.Value);
+        public JobDefinitionService JobDefinitions => new(_jobDefinitionApi.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/job/"/>
-        public JobService Jobs => new JobService(_jobApi.Value);
+        public JobService Jobs => new(_jobApi.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/message/"/>
-        public MessageService Messages => new MessageService(_messageApi.Value);
+        public MessageService Messages => new(_messageApi.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.13/reference/rest/migration/"/>
-        public MigrationService Migrations => new MigrationService(_migrationRestService.Value);
+        public MigrationService Migrations => new(_migrationRestService.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/process-definition/"/>
-        public ProcessDefinitionService ProcessDefinitions => new ProcessDefinitionService(_processDefinitionApi.Value);
+        public ProcessDefinitionService ProcessDefinitions => new(_processDefinitionApi.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/process-instance/"/>
-        public ProcessInstanceService ProcessInstances => new ProcessInstanceService(_processInstanceApi.Value);
+        public ProcessInstanceService ProcessInstances => new(_processInstanceApi.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/signal/"/>
-        public SignalService Signals => new SignalService(_signalApi.Value);
+        public SignalService Signals => new(_signalApi.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/task/"/>
-        public TenantService Tenants => new TenantService(_tenantApi.Value);
+        public TenantService Tenants => new(_tenantApi.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/tenant/"/>
-        public UserService Users => new UserService(_userApi.Value);
+        public UserService Users => new(_userApi.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/user/"/>
-        public UserTaskService UserTasks => new UserTaskService(_userTaskApi.Value);
+        public UserTaskService UserTasks => new(_userTaskApi.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/variable-instance/"/>
-        public VariableInstanceService VariableInstances => new VariableInstanceService(_variableInstanceApi.Value);
+        public VariableInstanceService VariableInstances => new(_variableInstanceApi.Value);
 
         /// <see href="https://docs.camunda.org/manual/7.9/reference/rest/filter/"/>
-        public FilterService Filters => new FilterService(_filterApi.Value);
+        public FilterService Filters => new(_filterApi.Value);
     }
 }
