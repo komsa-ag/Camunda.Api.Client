@@ -153,4 +153,4 @@ var jobs = await camunda.Jobs.Query(jobQuery).List();
 ```
 
 ## License
-This project is made available under the MIT license. See [LICENSE](LICENSE) for details.
+This project is made available under the MIT license. See [LICENSE](https://github.com/komsa-ag/Camunda.Api.Client/blob/master/LICENSE) for details.
