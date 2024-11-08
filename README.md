@@ -5,7 +5,7 @@ Just use Komsa.Camunda.Api.Client nuget package instead of Camunda.Api.Client.
 
 # Camunda 7 REST API Client [![NuGet](https://img.shields.io/nuget/v/Camunda.Api.Client.svg)](https://www.nuget.org/packages/Komsa.Camunda.Api.Client)
 Camunda REST API Client for .NET platform
-- [x] .NET Framework 4.6.1
+- [x] .NET Framework 4.7.1
 - [x] .NET Standard 2.0
 
 ## Covered API
