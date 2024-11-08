@@ -10,12 +10,13 @@
     <Authors>Jan Lucansky;KOMSA AG</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/komsa-ag/Camunda.Api.Client</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
     <Description>Camunda REST API Client for .NET platform</Description>
     <PackageTags>camunda rest refit bpmn bpm komsa</PackageTags>
     <PackageReleaseNotes></PackageReleaseNotes>
     <RepositoryType></RepositoryType>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <NoWarn>1701;1702;1705;1591</NoWarn>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <!-- Don't increment AssemblyVersion -->
@@ -34,6 +35,7 @@
 
   <ItemGroup>
     <None Include="..\LICENSE" Pack="true" PackagePath="" />
+    <None Include="..\README.md" Pack="true" PackagePath="" />
     <None Include="icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
