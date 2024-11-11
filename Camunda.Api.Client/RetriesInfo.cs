@@ -1,7 +1,6 @@
-﻿namespace Camunda.Api.Client
+﻿namespace Camunda.Api.Client;
+
+internal class RetriesInfo
 {
-    internal class RetriesInfo
-    {
-        public long Retries;
-    }
+  public long Retries;
 }

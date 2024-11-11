@@ -1,11 +1,10 @@
 ﻿using Refit;
 using System.Threading.Tasks;
 
-namespace Camunda.Api.Client.Signal
+namespace Camunda.Api.Client.Signal;
+
+internal interface ISignalRestService
 {
-    internal interface ISignalRestService
-    {
-        [Post("/signal")]
-        Task ThrowSignal([Body] Signal signal);
-    }
+  [Post("/signal")]
+  Task ThrowSignal([Body] Signal signal);
 }

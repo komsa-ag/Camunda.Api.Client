@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace Camunda.Api.Client.ProcessInstance
+namespace Camunda.Api.Client.ProcessInstance;
+
+public class ProcessInstanceWithVariables : ProcessInstanceInfo
 {
-    public class ProcessInstanceWithVariables : ProcessInstanceInfo
-    {
-        /// <summary>
-        /// Object containing a property for each of the latest variables.
-        /// </summary>
-        public Dictionary<string, VariableValue> Variables;
-    }
+  /// <summary>
+  /// Object containing a property for each of the latest variables.
+  /// </summary>
+  public Dictionary<string, VariableValue> Variables;
 }

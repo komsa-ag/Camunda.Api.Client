@@ -1,83 +1,90 @@
-﻿namespace Camunda.Api.Client.History
+﻿namespace Camunda.Api.Client.History;
+
+public class HistoryService
 {
-    public class HistoryService
-    {
-        private CamundaClient.HistoricApi _api;
+  private readonly CamundaClient.HistoricApi _api;
 
-        internal HistoryService(CamundaClient.HistoricApi api)
-        {
-            _api = api;
-        }
+  internal HistoryService(CamundaClient.HistoricApi api) => _api = api;
 
-        /// <summary>
-        /// Case Definition
-        /// </summary>
-        public HistoricCaseDefinitionService CaseDefinitions => new HistoricCaseDefinitionService(_api.CaseDefinitionApi.Value);
+  /// <summary>
+  /// Case Definition
+  /// </summary>
+  public HistoricCaseDefinitionService CaseDefinitions
+    => new(_api.CaseDefinitionApi.Value);
 
-        /// <summary>
-        /// Case Instance
-        /// </summary>
-        public HistoricCaseInstanceService CaseInstances => new HistoricCaseInstanceService(_api.CaseInstanceApi.Value);
+  /// <summary>
+  /// Case Instance
+  /// </summary>
+  public HistoricCaseInstanceService CaseInstances
+    => new(_api.CaseInstanceApi.Value);
 
-        /// <summary>
-        /// Case Activity Instance
-        /// </summary>
-        public HistoricCaseActivityInstanceService CaseActivityInstances => new HistoricCaseActivityInstanceService(_api.CaseActivityInstanceApi.Value);
+  /// <summary>
+  /// Case Activity Instance
+  /// </summary>
+  public HistoricCaseActivityInstanceService CaseActivityInstances
+    => new(_api.CaseActivityInstanceApi.Value);
 
-        /// <summary>
-        /// Decision Instance
-        /// </summary>
-        public HistoricDecisionInstanceService DecisionInstances => new HistoricDecisionInstanceService(_api.DecisionInstanceApi.Value);
+  /// <summary>
+  /// Decision Instance
+  /// </summary>
+  public HistoricDecisionInstanceService DecisionInstances
+    => new(_api.DecisionInstanceApi.Value);
 
-        /// <summary>
-        /// Process Instance
-        /// </summary>
-        public HistoricProcessInstanceService ProcessInstances => new HistoricProcessInstanceService(_api.ProcessInstanceApi.Value);
+  /// <summary>
+  /// Process Instance
+  /// </summary>
+  public HistoricProcessInstanceService ProcessInstances
+    => new(_api.ProcessInstanceApi.Value);
 
-        /// <summary>
-        /// Activity Instance
-        /// </summary>
-        public HistoricActivityInstanceService ActivityInstances => new HistoricActivityInstanceService(_api.ActivityInstanceApi.Value);
+  /// <summary>
+  /// Activity Instance
+  /// </summary>
+  public HistoricActivityInstanceService ActivityInstances
+    => new(_api.ActivityInstanceApi.Value);
 
-        /// <summary>
-        /// Job Log
-        /// </summary>
-        public HistoricJobLogService JobLogs => new HistoricJobLogService(_api.JobLogApi.Value);
+  /// <summary>
+  /// Job Log
+  /// </summary>
+  public HistoricJobLogService JobLogs
+    => new(_api.JobLogApi.Value);
 
-        /// <summary>
-        /// Incident
-        /// </summary>
-        public HistoricIncidentService Incidents => new HistoricIncidentService(_api.IncidentApi.Value);
+  /// <summary>
+  /// Incident
+  /// </summary>
+  public HistoricIncidentService Incidents
+    => new(_api.IncidentApi.Value);
 
-        /// <summary>
-        /// Variable Instance
-        /// </summary>
-        public HistoricVariableInstanceService VariableInstances => new HistoricVariableInstanceService(_api.VariableInstanceApi.Value);
+  /// <summary>
+  /// Variable Instance
+  /// </summary>
+  public HistoricVariableInstanceService VariableInstances
+    => new(_api.VariableInstanceApi.Value);
 
-        /// <summary>
-        /// Detail
-        /// </summary>
-        public HistoricDetailService Detail => new HistoricDetailService(_api.DetailApi.Value);
+  /// <summary>
+  /// Detail
+  /// </summary>
+  public HistoricDetailService Detail => new(_api.DetailApi.Value);
 
-        /// <summary>
-        /// User Task
-        /// </summary>
-        public HistoricUserTaskService UserTasks => new HistoricUserTaskService(_api.UserTaskApi.Value);
+  /// <summary>
+  /// User Task
+  /// </summary>
+  public HistoricUserTaskService UserTasks => new(_api.UserTaskApi.Value);
 
-        /// <summary>
-        /// Process Definition
-        /// </summary>
-        public HistoricProcessDefinitionService ProcessDefinitions => new HistoricProcessDefinitionService(_api.ProcessDefinitionApi.Value);
+  /// <summary>
+  /// Process Definition
+  /// </summary>
+  public HistoricProcessDefinitionService ProcessDefinitions
+    => new(_api.ProcessDefinitionApi.Value);
 
-        /// <summary>
-        /// External Task Log
-        /// </summary>
-        public HistoricExternalTaskLogService ExternalTaskLogs => new HistoricExternalTaskLogService(_api.ExternalTaskLogApi.Value);
+  /// <summary>
+  /// External Task Log
+  /// </summary>
+  public HistoricExternalTaskLogService ExternalTaskLogs
+    => new(_api.ExternalTaskLogApi.Value);
 
-        /// <summary>
-        /// User Operation Logs
-        /// </summary>
-        public HistoricUserOperationLogService UserOperationLogs => new HistoricUserOperationLogService(_api.UserOperationLogApi.Value);
-
-    }
+  /// <summary>
+  /// User Operation Logs
+  /// </summary>
+  public HistoricUserOperationLogService UserOperationLogs
+    => new(_api.UserOperationLogApi.Value);
 }

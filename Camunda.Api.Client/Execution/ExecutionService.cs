@@ -1,18 +1,13 @@
-﻿namespace Camunda.Api.Client.Execution
+﻿namespace Camunda.Api.Client.Execution;
+
+public class ExecutionService
 {
-    public class ExecutionService
-    {
-        private IExecutionRestService _api;
+  private readonly IExecutionRestService _api;
 
-        internal ExecutionService(IExecutionRestService api)
-        {
-            _api = api;
-        }
+  internal ExecutionService(IExecutionRestService api) => _api = api;
 
-        public ExecutionResource this[string executionId] => new ExecutionResource(_api, executionId);
+  public ExecutionResource this[string executionId] => new(_api, executionId);
 
-        public QueryResource<ExecutionQuery, ExecutionInfo> Query(ExecutionQuery query = null) =>
-            new QueryResource<ExecutionQuery, ExecutionInfo>(query, _api.GetList, _api.GetListCount);
-
-    }
+  public QueryResource<ExecutionQuery, ExecutionInfo> Query(ExecutionQuery query = null)
+    => new(query, _api.GetList, _api.GetListCount);
 }
