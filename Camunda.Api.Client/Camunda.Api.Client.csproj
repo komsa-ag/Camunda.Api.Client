@@ -1,22 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile Condition=" '$(Configuration)' == 'Release' ">true</GenerateDocumentationFile>
-    <VersionSuffix>preview.2</VersionSuffix>
+    <VersionSuffix></VersionSuffix>
     <VersionPrefix>2.8.0.0</VersionPrefix>
     <Product>Camunda REST API Client</Product>
     <Title>Camunda REST API Client</Title>
     <Authors>Jan Lucansky;KOMSA AG</Authors>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageProjectUrl>https://github.com/komsa-ag/Camunda.Api.Client</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageIcon>icon.png</PackageIcon>
-    <Description>Camunda REST API Client for .NET platform</Description>
-    <PackageTags>camunda rest refit bpmn bpm komsa</PackageTags>
-    <PackageReleaseNotes></PackageReleaseNotes>
-    <RepositoryType></RepositoryType>
     <NoWarn>1701;1702;1705;1591</NoWarn>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <!-- Don't increment AssemblyVersion -->
@@ -45,8 +36,19 @@
     <Exec Condition="$(SIGNTOOL_WAIT) != ''" Command="start cmd /c pause" />
   </Target>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Camunda.Api.Client.Tests, PublicKey=00240000048000009400000006020000002400005253413100040000010001004196a3758b909b46774069391580d90f2078e831d76f42a00c3d584321fd9b394b12d3a46eab643bc339f526d1d95f7450cfd7a0a0316ce2eea145b9d9013f6b677aac1333d94007c79c33e2804af6a749c732ac4590f17f078d33445a25c45598f744f0774d2c3d82e2a8b0309203be7e3d0b719f7825d4ded4577b435db7ae" />
+  </ItemGroup>
+
   <PropertyGroup Label="NuGet generation">
     <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/komsa-ag/Camunda.Api.Client</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <Description>Camunda REST API Client for .NET platform</Description>
+    <PackageTags>camunda rest refit bpmn bpm komsa</PackageTags>
     <PackageId>Komsa.Camunda.Api.Client</PackageId>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <NoPackageAnalysis>true</NoPackageAnalysis>
