@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace Camunda.Api.Client.CaseExecution
-{
-    public class CaseExecutionDisable
-    {
-        public Dictionary<string, VariableValue> Variables = new Dictionary<string, VariableValue>();
+namespace Camunda.Api.Client.CaseExecution;
 
-        // TODO: deletions
-    }
+public class CaseExecutionDisable
+{
+  public Dictionary<string, VariableValue> Variables = [];
+
+  // TODO: deletions
 }

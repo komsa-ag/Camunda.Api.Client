@@ -1,18 +1,17 @@
 ﻿#region Usings
 
-using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 #endregion
 
-namespace Camunda.Api.Client.CaseInstance
-{
-    public class ChangeCaseInstanceState
-    {
-        [JsonProperty("variables")]
-        public Dictionary<string, CaseInstanceVariableValue> Variables;
+namespace Camunda.Api.Client.CaseInstance;
 
-        [JsonProperty("deletions")]
-        public List<CaseInstanceDeleteVariable> Deletions;
-    }
+public class ChangeCaseInstanceState
+{
+  [JsonProperty("variables")]
+  public Dictionary<string, CaseInstanceVariableValue> Variables;
+
+  [JsonProperty("deletions")]
+  public List<CaseInstanceDeleteVariable> Deletions;
 }

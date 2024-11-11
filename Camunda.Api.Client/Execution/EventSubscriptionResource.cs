@@ -1,30 +1,31 @@
 ﻿using System.Threading.Tasks;
 
-namespace Camunda.Api.Client.Execution
+namespace Camunda.Api.Client.Execution;
+
+public class EventSubscriptionResource
 {
-    public class EventSubscriptionResource
-    {
-        private string _executionId;
-        private IExecutionRestService _api;
-        private string _messageName;
+  private readonly string _executionId;
+  private readonly IExecutionRestService _api;
+  private readonly string _messageName;
 
-        internal EventSubscriptionResource(IExecutionRestService api, string executionId, string messageName)
-        {
-            _api = api;
-            _executionId = executionId;
-            _messageName = messageName;
-        }
+  internal EventSubscriptionResource(IExecutionRestService api, string executionId, string messageName)
+  {
+    _api = api;
+    _executionId = executionId;
+    _messageName = messageName;
+  }
 
-        /// <summary>
-        /// Get a message event subscription for a specific execution and a message name.
-        /// </summary>
-        public Task<EventSubscription> Get() => _api.GetMessageEventSubscription(_executionId, _messageName);
+  /// <summary>
+  /// Get a message event subscription for a specific execution and a message name.
+  /// </summary>
+  public Task<EventSubscription> Get() 
+    => _api.GetMessageEventSubscription(_executionId, _messageName);
 
-        /// <summary>
-        /// Deliver a message to a specific execution to trigger an existing message event subscription. Inject process variables as the message’s payload.
-        /// </summary>
-        public Task Trigger(ExecutionTrigger trigger) => _api.TriggerMessageEventSubscription(_executionId, _messageName, trigger);
+  /// <summary>
+  /// Deliver a message to a specific execution to trigger an existing message event subscription. Inject process variables as the message’s payload.
+  /// </summary>
+  public Task Trigger(ExecutionTrigger trigger) 
+    => _api.TriggerMessageEventSubscription(_executionId, _messageName, trigger);
 
-        public override string ToString() => _executionId;
-    }
+  public override string ToString() => _executionId;
 }

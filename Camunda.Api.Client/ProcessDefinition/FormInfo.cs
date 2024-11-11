@@ -1,13 +1,12 @@
-﻿namespace Camunda.Api.Client.ProcessDefinition
-{
-    public class FormInfo
-    {
-        /// <summary>
-        /// The form key for the process definition.
-        /// </summary>
-        public string Key;
-        public string ContextPath;
+﻿namespace Camunda.Api.Client.ProcessDefinition;
 
-        public override string ToString() => Key;
-    }
+public class FormInfo
+{
+  /// <summary>
+  /// The form key for the process definition.
+  /// </summary>
+  public string Key;
+  public string ContextPath;
+
+  public override string ToString() => Key;
 }

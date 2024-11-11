@@ -1,21 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Camunda.Api.Client.Message
+namespace Camunda.Api.Client.Message;
+
+public class MessageService
 {
-    public class MessageService
-    {
-        private IMessageRestService _api;
+  private readonly IMessageRestService _api;
 
-        internal MessageService(IMessageRestService api)
-        {
-            _api = api;
-        }
+  internal MessageService(IMessageRestService api) => _api = api;
 
-        /// <summary>
-        /// Deliver a message to the process engine to either trigger a message start event or an intermediate message catching event. 
-        /// Internally this maps to the engine’s message correlation builder methods <c>MessageCorrelationBuilder#correlate()</c> and <c>MessageCorrelationBuilder#correlateAll()</c>
-        /// </summary>
-        public Task<List<CorrelationResult>> DeliverMessage(CorrelationMessage message) => _api.DeliverMessage(message);
-    }
+  /// <summary>
+  /// Deliver a message to the process engine to either trigger a message start event or an intermediate message catching event. 
+  /// Internally this maps to the engine’s message correlation builder methods <c>MessageCorrelationBuilder#correlate()</c> and <c>MessageCorrelationBuilder#correlateAll()</c>
+  /// </summary>
+  public Task<List<CorrelationResult>> DeliverMessage(CorrelationMessage message)
+    => _api.DeliverMessage(message);
 }

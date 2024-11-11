@@ -1,63 +1,62 @@
 ﻿#region Usings
 
-using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 #endregion
 
-namespace Camunda.Api.Client.CaseInstance
+namespace Camunda.Api.Client.CaseInstance;
+
+public class CaseInstanceQuery
 {
-    public class CaseInstanceQuery
-    {
-        [JsonProperty("caseInstanceId")]
-        public string CaseInstanceId;
+  [JsonProperty("caseInstanceId")]
+  public string CaseInstanceId;
 
-        [JsonProperty("businessKey")]
-        public string BusinessKey;
+  [JsonProperty("businessKey")]
+  public string BusinessKey;
 
-        [JsonProperty("caseDefinitionId")]
-        public string CaseDefinitionId;
+  [JsonProperty("caseDefinitionId")]
+  public string CaseDefinitionId;
 
-        [JsonProperty("caseDefinitionKey")]
-        public string CaseDefinitionKey;
+  [JsonProperty("caseDefinitionKey")]
+  public string CaseDefinitionKey;
 
-        [JsonProperty("deploymentId")]
-        public string DeploymentId;
+  [JsonProperty("deploymentId")]
+  public string DeploymentId;
 
-        [JsonProperty("superProcessInstance")]
-        public string SuperProcessInstance;
+  [JsonProperty("superProcessInstance")]
+  public string SuperProcessInstance;
 
-        [JsonProperty("subProcessInstance")]
-        public string SubProcessInstance;
+  [JsonProperty("subProcessInstance")]
+  public string SubProcessInstance;
 
-        [JsonProperty("superCaseInstance")]
-        public string SuperCaseInstance;
+  [JsonProperty("superCaseInstance")]
+  public string SuperCaseInstance;
 
-        [JsonProperty("subCaseInstance")]
-        public string SubCaseInstance;
+  [JsonProperty("subCaseInstance")]
+  public string SubCaseInstance;
 
-        [JsonProperty("active")]
-        public bool? Active;
+  [JsonProperty("active")]
+  public bool? Active;
 
-        [JsonProperty("completed")]
-        public bool? Completed;
+  [JsonProperty("completed")]
+  public bool? Completed;
 
-        [JsonProperty("tenantIdIn")]
-        public List<string> TenantIdIn;
+  [JsonProperty("tenantIdIn")]
+  public List<string> TenantIdIn;
 
-        [JsonProperty("withoutTenantId")]
-        public bool? WithoutTenantId;
+  [JsonProperty("withoutTenantId")]
+  public bool? WithoutTenantId;
 
-        [JsonProperty("variables")]
-        public List<CaseInstanceQueryVariable> Variables;
+  [JsonProperty("variables")]
+  public List<CaseInstanceQueryVariable> Variables;
 
-        [JsonProperty("variableNamesIgnoreCase")]
-        public bool VariableNamesIgnoreCase;
+  [JsonProperty("variableNamesIgnoreCase")]
+  public bool VariableNamesIgnoreCase;
 
-        [JsonProperty("variableValuesIgnoreCase")]
-        public bool VariableValuesIgnoreCase;
+  [JsonProperty("variableValuesIgnoreCase")]
+  public bool VariableValuesIgnoreCase;
 
-        [JsonProperty("sorting")]
-        public List<CaseInstanceSorting> Sorting;
-    }
+  [JsonProperty("sorting")]
+  public List<CaseInstanceSorting> Sorting;
 }
